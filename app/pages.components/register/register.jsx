@@ -11,20 +11,18 @@ import Link from "next/link";
 import classnames from "classnames";
 // import { withRouter } from "next/router";
 
-
+@connect()
 class Register extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			credential: {
-                loading: false,
-                username: "", 
-                password: ""
-			},
-			loading: false, loaded: true
-		};
-	}
+    
+	state = {
+        payload: {
+            password: "",
+            username: "",
+            confirm_pw: "",
+        },
+        loading: false
+    }
 
 	handleChange = path => value => {
 		const state = { ... this.state };
@@ -32,34 +30,40 @@ class Register extends React.Component {
 		this.setState(state);
     };
     
-    handleSubmit = async () => {
-        e.preventDefault();
+    handleSubmit = async (event) => {
+        event.preventDefault();
 
-        const { username, password, confirm_pw } = e.target;
+        const { username, password, confirm_pw } = this.state.payload;
 
-        if (password.value !== confirm_pw.value) {
+        if (username.trim() === "" || password.trim() === "") {
+            return window.alert("Username and password can't be empty");
+        }
+
+        if (password !== confirm_pw) {
             return window.alert("Passwords don't match. Please try again.");
         }
 
-        const registeredUser = {
-            username: username.value.toLowerCase(),
-            password: password.value
+        let newUser = {
+            username,
+            password
         }
 
         try {
             this.setState({ loading: true });
-            await api.user.registerAccount(registeredUser);
-            return Router.replace("/dashboard");
+            let data = await api.user.registerAccount(newUser);
+            console.log("data", data);
+            this.setState({ loading: false });
+            return Router.push("/dashboard");
         } catch (error) {
             console.error(error);
 			window.alert(error.response?.data ?? error.message);
-			this.setState({ loading: false });
+			return this.setState({ loading: false });
         }
     }
 
 	render() {
-		const { loading } = this.state;
-		const { username, password } = this.state.credential;
+        const { loading, payload } = this.state
+        console.log("state", this.state);
 		return (
             <>
                 <div className={classnames(css.bg)} />
@@ -81,7 +85,13 @@ class Register extends React.Component {
                                         </span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="username" name="username" type="text" />
+                                        <input 
+                                            id="username" 
+                                            name="username" 
+                                            // type="text" 
+                                            value={payload.username} 
+                                            onChange={event => this.handleChange("payload.username")(event.target.value)}
+                                        />
                                     </div>
                                 </div>
                                 <div className="LoginForm__signupElement">
@@ -92,7 +102,13 @@ class Register extends React.Component {
                                         <span className="astrik">*</span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="password" name="password" type="password" />
+                                        <input 
+                                            id="password" 
+                                            name="password" 
+                                            type="password" 
+                                            value={payload.password} 
+                                            onChange={event => this.handleChange("payload.password")(event.target.value)}
+                                        />
                                     </div>
                                 </div>
                                 <div className="LoginForm__signupElement">
@@ -103,7 +119,13 @@ class Register extends React.Component {
                                         <span className="astrik">*</span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="confirm_pw" name="confirm_pw" type="password" />
+                                        <input 
+                                            id="confirm_pw" 
+                                            name="confirm_pw" 
+                                            type="password" 
+                                            value={payload.confirm_pw} 
+                                            onChange={event => this.handleChange("payload.confirm_pw")(event.target.value)}
+                                        />
                                     </div>
                                 </div>
                                 <div className="signin-button">

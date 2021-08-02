@@ -10,13 +10,7 @@ import { connect } from "react-redux";
 import { action } from "../../modules";
 import ReactSelect from "components/ReactSelect";
 
-
-const mapDispatchToProps = dispatch => ({
-	openModal: (payload) => dispatch(action.modal.open("UPDATESKU", payload)),
-	openDelete: (payload) => dispatch(action.modal.open("DELETESKU", payload)),
-});
-
-@connect(null, mapDispatchToProps)
+@connect()
 class Dashboard extends React.Component { 
 
 	state = {
@@ -48,7 +42,7 @@ class Dashboard extends React.Component {
 
 		return (
 			<div className="container-fluid" id="dashboard_top">
-
+				Dashboard
 			</div>
 		);
 	}

@@ -11,7 +11,7 @@ import Link from "next/link";
 import classnames from "classnames";
 // import { withRouter } from "next/router";
 
-// @withRouter
+@connect()
 class Login extends React.Component {
 
 	constructor(props) {
@@ -32,7 +32,7 @@ class Login extends React.Component {
 
 	render() {
 		const { loading } = this.state;
-		const { username, password } = this.state.credential;
+		// const { username, password } = this.state.credential;
 		return (
 			<>
 				<div className={classnames(css.bg)} />

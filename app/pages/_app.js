@@ -62,9 +62,26 @@ class App extends NextApp {
 		// this.forceUpdate()
 	}
 
+	renderScreen = () => {
+		const { Component, pageProps } = this.props;
+		if (Component.displayName == "Connect(Register)") {
+			return (
+				<Component {...pageProps} />
+			)
+		} else {
+			return (
+				<Main {...pageProps}>
+					<Component {...pageProps} />
+				</Main>
+			)
+		}
+	}
+
 	render() {
 		const { Component, pageProps, store } = this.props;
 		console.log("Component", Component);
+		// console.log("pageProps", pageProps);
+		// console.log("store", store);
 		return (
 			<>
 				<Head>
@@ -81,15 +98,7 @@ class App extends NextApp {
 					}]}
 				/>
 				<Provider store={store}>
-					{
-						Component.displayName == "Connect(Register)" ? (
-							<Component {...pageProps} />
-						) : (
-							<Main {...pageProps}>
-								<Component {...pageProps} />
-							</Main>
-						)
-					}
+					{this.renderScreen()}
 				</Provider>
 			</>
 		);
