@@ -184,7 +184,7 @@ class Main extends React.Component {
 			<>
 				<ul className={css["sidebar-list-narrow"]}>
 					{
-						["eqiu", "croques"].includes(this.props?.user?.id) ? ( this.getSidebar().map((item, index) => {
+						this.getSidebar().map((item, index) => {
 							if (typeof item == "string")
 								return (
 									<React.Fragment key={index} />
@@ -222,47 +222,6 @@ class Main extends React.Component {
 								</li>
 							);
 						})
-						) : (
-							this.getSidebar().filter(row => ["/dashboard", "/locations", "/picking"].includes(row.page)).map((item, index) => {
-								// console.log("ITEM", item);
-								if (typeof item == "string")
-									return (
-										<React.Fragment key={index} />
-									);
-								if (item.type == "dropdown") {
-									return (
-										<li key={index} className={css["dropdown-narrow"]}>
-											<a>
-												<i className={item.icon} />
-											</a>
-											<ul className={css["sidebar-list"]}>
-												{
-													(item.menu ?? []).map((item, index) => (
-														<li key={index} className={this.isCurrentDirectory(item) ? css["active-item"] : void 0}>
-															<Link href={item.page}>
-																<a>
-																	<i className={item.icon} />
-																	<span>{item.name}</span>
-																</a>
-															</Link>
-														</li>
-													))
-												}
-											</ul>
-										</li>
-									);
-								}
-								return (
-									<li key={index} className={this.isCurrentDirectory(item) ? css["active-item"] : void 0}>
-										<Link href={item.page}>
-											<a>
-												<i className={item.icon} />
-											</a>
-										</Link>
-									</li>
-								);
-							})
-						)
 					}
 				</ul>
 				<ul className={css["sidebar-list-narrow"]}>
@@ -282,7 +241,7 @@ class Main extends React.Component {
 			<>
 				<ul className={css["sidebar-list"]}>
 					{
-						["eqiu", "croques"].includes(this.props.user.id) ? ( this.getSidebar().map((item, index) => {
+						this.getSidebar().map((item, index) => {
 							if (typeof item == "string")
 								return (
 									<li key={index} className={css.catalog}>
@@ -329,55 +288,6 @@ class Main extends React.Component {
 								</li>
 							);
 						})
-						) : (
-							this.getSidebar().filter(row => ["/dashboard", "/locations", "/picking"].includes(row.page)).map((item, index) => {
-								if (typeof item == "string")
-									return (
-										<li key={index} className={css.catalog}>
-											<span>{item}</span>
-										</li>
-									);
-	
-								if (item.type == "dropdown") {
-									return (
-										<li key={index} className={css.dropdown}>
-											<a>
-												<span>
-													<i className={item.icon} />
-													<span>{item.name}</span>
-												</span>
-												<i className="fa fa-angle-right" />
-											</a>
-											<ul className={css["sidebar-list"]}>
-												{
-													(item.menu ?? []).map((item, index) => (
-														<li key={index} className={this.isCurrentDirectory(item) ? css["active-item"] : void 0}>
-															<Link href={item.page}>
-																<a>
-																	<i className={item.icon} />
-																	<span>{item.name}</span>
-																</a>
-															</Link>
-														</li>
-													))
-												}
-											</ul>
-										</li>
-									)
-								}
-	
-								return (
-									<li key={index} className={this.isCurrentDirectory(item) ? css["active-item"] : void 0}>
-										<Link href={item.page}>
-											<a>
-												<i className={item.icon} />
-												<span>{item.name}</span>
-											</a>
-										</Link>
-									</li>
-								);
-							})
-						)
 					}
 				</ul>
 				<ul className={css["sidebar-list"]}>
