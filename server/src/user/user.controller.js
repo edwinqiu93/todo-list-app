@@ -1,12 +1,43 @@
 "use strict";
+let UsersService = require("./user.service");
 
 async function registerAccount(req, res) {
     const { user } = req.body;
+    const { user: { username, password }} = req.body;
     console.log("user", user);
 
-    let data = user;
+    for (let field in user) {
+        if (!user[field]) {
+            return res.status(400).json(`Please fill in the ${field} field and resubmit.`);
+        }
+    }
 
-    return res.json({ data });
+    let passwordError = UsersService.validatePassword(password);
+
+    if (passwordError ) {
+        return res.status(400).json(passwordError);
+    }
+
+    UsersService.checkIfUserExists(username, db)
+            .then(user => {
+                if (user) {
+                    return res.status(400).json(`Username already taken`);
+                }
+                return UsersService.hashPassword(password)
+                    .then(hashedPassword => {
+                        let newUser = {
+                            username,
+                            password: hashedPassword
+                        }
+                        return UsersService.insertUser(newUser, db)
+                            .then(insertedUser => {
+                                res
+                                    .status(201)
+                                    .location(path.posix.join(req.originalUrl, `/${insertedUser.id}`))
+                                    .json(UsersService.serializeUser(insertedUser))
+                            })  
+                    })
+            })
 }
 
 module.exports = {
