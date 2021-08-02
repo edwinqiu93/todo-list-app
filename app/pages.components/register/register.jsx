@@ -9,22 +9,18 @@ import { action } from "modules";
 import css from "./register.module.scss";
 import Link from "next/link";
 import classnames from "classnames";
+// import { withRouter } from "next/router";
 
-@connect(
-	state => ({
-		user: state.base.user
-	}),
-	dispatch => ({
-		setUser: (user, access_token) => dispatch(action.base.setUser(user, access_token))
-	})
-)
+
 class Register extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			credential: {
-				username: "", password: "",
+                loading: false,
+                username: "", 
+                password: ""
 			},
 			loading: false, loaded: true
 		};
@@ -34,7 +30,32 @@ class Register extends React.Component {
 		const state = { ... this.state };
 		objectPath.set(state, path, value);
 		this.setState(state);
-	};
+    };
+    
+    handleSubmit = async () => {
+        e.preventDefault();
+
+        const { username, password, confirm_pw } = e.target;
+
+        if (password.value !== confirm_pw.value) {
+            return window.alert("Passwords don't match. Please try again.");
+        }
+
+        const registeredUser = {
+            username: username.value.toLowerCase(),
+            password: password.value
+        }
+
+        try {
+            this.setState({ loading: true });
+            await api.user.registerAccount(registeredUser);
+            return Router.replace("/dashboard");
+        } catch (error) {
+            console.error(error);
+			window.alert(error.response?.data ?? error.message);
+			this.setState({ loading: false });
+        }
+    }
 
 	render() {
 		const { loading } = this.state;
@@ -60,8 +81,7 @@ class Register extends React.Component {
                                         </span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="username" name="username" type="text"
-                                        />
+                                        <input id="username" name="username" type="text" />
                                     </div>
                                 </div>
                                 <div className="LoginForm__signupElement">
@@ -72,28 +92,27 @@ class Register extends React.Component {
                                         <span className="astrik">*</span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="password" name="password" type="password"
-                                        />
+                                        <input id="password" name="password" type="password" />
                                     </div>
                                 </div>
                                 <div className="LoginForm__signupElement">
                                     <div className="LoginForm__signupLabel">
-                                        <label htmlFor="confirm-pw">
+                                        <label htmlFor="confirm_pw">
                                             Confirm Password    
                                         </label>
                                         <span className="astrik">*</span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
-                                        <input id="confirm-pw" name="confirm-pw" type="password" />
+                                        <input id="confirm_pw" name="confirm_pw" type="password" />
                                     </div>
                                 </div>
                                 <div className="signin-button">
-                                    <button className="btn btn_signIn" type="submit"> 
-                                        Continue
+                                    <button className="btn btn_signIn" type="submit" disabled={loading}> 
+                                        Create Account
                                     </button>
                                 </div>
                                 <div className="LoginForm__signupDemo">
-                                    <p>Password must be longer than 8 characters and contain one upper case, lower case, number and special character.</p>
+                                    <p>Password must be longer than 8 characters and contain one upper case, lower case, and number.</p>
                                 </div>
                                 <div className="LoginForm__redirect">
                                     <Link href="/"><a>Already Have an Account?</a></Link>

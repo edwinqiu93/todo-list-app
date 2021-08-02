@@ -64,7 +64,7 @@ class App extends NextApp {
 
 	render() {
 		const { Component, pageProps, store } = this.props;
-		// console.log("Component", Component);
+		console.log("Component", Component);
 		return (
 			<>
 				<Head>

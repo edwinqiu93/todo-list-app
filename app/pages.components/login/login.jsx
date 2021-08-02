@@ -9,15 +9,9 @@ import { action } from "modules";
 import css from "./login.module.scss";
 import Link from "next/link";
 import classnames from "classnames";
+// import { withRouter } from "next/router";
 
-@connect(
-	state => ({
-		user: state.base.user
-	}),
-	dispatch => ({
-		setUser: (user, access_token) => dispatch(action.base.setUser(user, access_token))
-	})
-)
+// @withRouter
 class Login extends React.Component {
 
 	constructor(props) {
