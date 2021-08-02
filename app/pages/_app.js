@@ -10,6 +10,9 @@ import store from "../store";
 import webConfig from "../web.config";
 import "../styles/index.scss";
 import 'react-day-picker/lib/style.css';
+import IdleService from "../services/idle-service";
+import TokenService from "../services/token-service";
+import UsersService from "../services/user-api-service";
 
 moment.prototype.standard = function () {
 	return this.format("Do MMMM, YYYY hh:mm a");
@@ -34,8 +37,34 @@ Router.events.on(
 @withRedux(store)
 class App extends NextApp {
 
+	componentDidMount() {
+		IdleService.setIdleCallback(this.logoutFromIdle);
+		if (TokenService.hasAuthToken()) {
+		  IdleService.registerIdleTimerResets();
+		  TokenService.queueCallbackBeforeExpiry(() => {
+			console.log("token service que called");
+			UsersService.postRefreshToken();
+		  })
+		} 
+	}
+	
+	componentWillUnmount() {
+		IdleService.unRegisterIdleResets();
+		TokenService.clearCallbackBeforeExpiry();
+	}
+	
+	logoutFromIdle = () => {
+		TokenService.clearAuthToken();
+		TokenService.clearCallbackBeforeExpiry();
+		IdleService.unRegisterIdleResets();
+	
+		this.props.history.push('/');
+		// this.forceUpdate()
+	}
+
 	render() {
 		const { Component, pageProps, store } = this.props;
+		// console.log("Component", Component);
 		return (
 			<>
 				<Head>
@@ -52,9 +81,15 @@ class App extends NextApp {
 					}]}
 				/>
 				<Provider store={store}>
-					<Main {...pageProps}>
-						<Component {...pageProps} />
-					</Main>
+					{
+						Component.displayName == "Connect(Register)" ? (
+							<Component {...pageProps} />
+						) : (
+							<Main {...pageProps}>
+								<Component {...pageProps} />
+							</Main>
+						)
+					}
 				</Provider>
 			</>
 		);
