@@ -19,6 +19,10 @@ class Dashboard extends React.Component {
 		data: []
 	}
 
+	componentDidMount() {
+		console.log("in dashboard mount");
+	}
+
 	getInitialPayload() {
 		return {
 			

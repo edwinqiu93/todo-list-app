@@ -19,7 +19,7 @@ class Register extends React.Component {
         payload: {
             password: "",
             username: "",
-            confirm_pw: "",
+            confirmPassword: "",
         },
         loading: false
     }
@@ -33,13 +33,13 @@ class Register extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
-        const { username, password, confirm_pw } = this.state.payload;
+        const { username, password, confirmPassword } = this.state.payload;
 
         if (username.trim() === "" || password.trim() === "") {
             return window.alert("Username and password can't be empty");
         }
 
-        if (password !== confirm_pw) {
+        if (password !== confirmPassword) {
             return window.alert("Passwords don't match. Please try again.");
         }
 
@@ -113,18 +113,18 @@ class Register extends React.Component {
                                 </div>
                                 <div className="LoginForm__signupElement">
                                     <div className="LoginForm__signupLabel">
-                                        <label htmlFor="confirm_pw">
+                                        <label htmlFor="confirmPassword">
                                             Confirm Password    
                                         </label>
                                         <span className="astrik">*</span>
                                     </div>
                                     <div className="LoginForm__signupLabel">
                                         <input 
-                                            id="confirm_pw" 
-                                            name="confirm_pw" 
+                                            id="confirmPassword" 
+                                            name="confirmPassword" 
                                             type="password" 
-                                            value={payload.confirm_pw} 
-                                            onChange={event => this.handleChange("payload.confirm_pw")(event.target.value)}
+                                            value={payload.confirmPassword} 
+                                            onChange={event => this.handleChange("payload.confirmPassword")(event.target.value)}
                                         />
                                     </div>
                                 </div>

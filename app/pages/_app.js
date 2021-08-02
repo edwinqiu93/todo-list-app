@@ -49,11 +49,13 @@ class App extends NextApp {
 	}
 	
 	componentWillUnmount() {
+		console.log("app unmounted");
 		IdleService.unRegisterIdleResets();
 		TokenService.clearCallbackBeforeExpiry();
 	}
 	
 	logoutFromIdle = () => {
+		console.log("logout invoked");
 		TokenService.clearAuthToken();
 		TokenService.clearCallbackBeforeExpiry();
 		IdleService.unRegisterIdleResets();
@@ -62,24 +64,9 @@ class App extends NextApp {
 		// this.forceUpdate()
 	}
 
-	renderScreen = () => {
-		const { Component, pageProps } = this.props;
-		if (Component.displayName == "Connect(Register)") {
-			return (
-				<Component {...pageProps} />
-			)
-		} else {
-			return (
-				<Main {...pageProps}>
-					<Component {...pageProps} />
-				</Main>
-			)
-		}
-	}
-
 	render() {
 		const { Component, pageProps, store } = this.props;
-		console.log("Component", Component);
+		// console.log("Component", Component);
 		// console.log("pageProps", pageProps);
 		// console.log("store", store);
 		return (
@@ -98,7 +85,9 @@ class App extends NextApp {
 					}]}
 				/>
 				<Provider store={store}>
-					{this.renderScreen()}
+					<Main {...pageProps}>
+						<Component {...pageProps} />
+					</Main>
 				</Provider>
 			</>
 		);

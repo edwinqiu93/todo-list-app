@@ -13,115 +13,35 @@ import pages from "constants/pages";
 import { action } from "modules";
 import * as api from "api";
 import css from "./Main.module.scss";
+import TokenService from "../../services/token-service";
+import IdleService from "../../services/idle-service";
 
-const ignorePaths = ["/demo"];
+
+const ignorePaths = ["/demo", "/register"];
 
 @withRouter
-@connect(
-	state => ({
-		user: state.base.user
-	}),
-	dispatch => ({
-		setUser: (user, access_token) =>
-			dispatch(action.base.setUser(user, access_token))
-	})
-)
+@connect()
 class Main extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			loaded: false,
-			sidebar: false
-		};
+	state = {
+		loaded: false,
+		sidebar: false
 	}
 
-	@autobind
-	logout() {
-		this.props.setUser();
-		localStorage.removeItem(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY);
+
+	logout = () =>  {
+		TokenService.clearAuthToken();
+		TokenService.clearCallbackBeforeExpiry();
+		IdleService.unRegisterIdleResets();
 		return Router.replace("/");
 	}
 
-	@autobind
-	async redirectIfLoggedIn() {
-		const pathname = this.props.router.pathname;
-		if (pathname == "/")
-			await Router.push("/dashboard");
-		return this.setState({ loaded: true });
-	}
-
-	async componentDidMount() {
-
-		const pathname = this.props.router.pathname;
-
-		/**
-		 * 
-		 * Ignore the default path name
-		 * 
-		 */
-		if (ignorePaths.includes(pathname))
-			return;
-
-		/**
-		 * 
-		 * If user already been setted
-		 * 
-		 */
-		if (this.props.user)
-			return this.redirectIfLoggedIn();
-
-		/**
-		 * 
-		 * Check if access token is stored in local storage
-		 * If Exist, try to login 
-		 * 
-		 */
-		let access_token = localStorage.getItem(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY);
-		const queries = qs.parse(this.props.router.asPath.replace(/^\/\#/, ""));
-
-		if (!access_token)
-			access_token = queries.access_token;
-
-		if (access_token) {
-			try {
-				const response = await api.user.me(access_token);
-				// console.log("response", response);
-				this.props.setUser(response.user, response.access_token);
-				localStorage.setItem(process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY, response.access_token);
-				return this.redirectIfLoggedIn();
-			} catch (error) {
-				console.error(error);
-				/**
-				 * 
-				 * Remove the local storage access token
-				 * 
-				 */
-				localStorage.removeItem("access_token");
-			}
-		}
-
-		/**
-		 * 
-		 * All else failed
-		 * 
-		 */
-		localStorage.removeItem("access_token");
-
-		if (pathname != "/") 
-			await Router.replace("/");
-
-		return this.setState({ loaded: true });
-	}
-
-	@autobind
-	isCurrentDirectory(page) {
+	isCurrentDirectory = (page) => {
 		const pathname = this.props.router.pathname;
 		return (page.page && pathToRegexp(page.page).exec(pathname));
 	}
 
-	@autobind
-	getCurrentPage() {
+	getCurrentPage = () => {
 		const _pages = pages.sidebar;
 		const pathname = this.props.router.pathname;
 
@@ -143,13 +63,12 @@ class Main extends React.Component {
 		}
 	}
 
-	@autobind
-	getSidebar() {
+	getSidebar = () => {
+		console.log("in sidebar")
 
 		let sidebar = JSON.parse(JSON.stringify(pages.sidebar));
-
-		if (process.env.NEXT_PUBLIC_PERMISSION_ENABLED !== "true")
-			return sidebar;
+		// if (process.env.NEXT_PUBLIC_PERMISSION_ENABLED !== "true")
+		// 	return sidebar;
 
 		const user = this.props.user;
 		const polices = user?.permissions || [];
@@ -175,16 +94,17 @@ class Main extends React.Component {
 				return true;
 			});
 
+		console.log("sidebar", sidebar);
 		return sidebar;
 	}
 
-	@autobind
-	renderSidebar() {
+	renderSidebar = () => {
 		return (
 			<>
 				<ul className={css["sidebar-list-narrow"]}>
 					{
 						this.getSidebar().map((item, index) => {
+							console.log("sidebar item", item);
 							if (typeof item == "string")
 								return (
 									<React.Fragment key={index} />
@@ -235,8 +155,7 @@ class Main extends React.Component {
 		);
 	}
 
-	@autobind
-	renderFullSidebar() {
+	renderFullSidebar = () => {
 		return (
 			<>
 				<ul className={css["sidebar-list"]}>
@@ -302,13 +221,13 @@ class Main extends React.Component {
 		)
 	}
 
-	@autobind
-	renderContent() {
+	
+	renderContent = () => {
 
-		const sidebar = this.state.sidebar;
-		const pathname = this.props.router.pathname;
+		const { sidebar } = this.state;
+		const { pathname } = this.props.router;
 
-		if (["/", "/login", "/demo"].includes(pathname)) {
+		if (["/", "/login", "/demo", "/register"].includes(pathname)) {
 			return this.props.children;
 		}
 
@@ -329,8 +248,9 @@ class Main extends React.Component {
 				<div className={css[sidebar ? "page-container" : "page-container-narrow"] + " error-page"}>
 					<aside className={sidebar ? css.sidebar : css["sidebar-narrow"]}>
 						{
-							sidebar ? <this.renderFullSidebar /> : <this.renderSidebar />
+							sidebar ? this.renderFullSidebar() : this.renderSidebar()
 						}
+					
 					</aside>
 					<div className={css["page-content"]}>
 						{
@@ -350,23 +270,17 @@ class Main extends React.Component {
 
 		if (ignorePaths.includes(pathname))
 			return (
-				<this.renderContent />
+				this.renderContent()
 			);
 
-		if (loaded)
-			return (
-				<>
-					<Sidebar>
-						<this.renderContent />
-					</Sidebar>
-					<Modal />
-					<ReactImages />
-				</>
-			);
 		return (
-			<div className={css.loading}>
-				<img src="/loading.svg" />
-			</div>
+			<>
+				<Sidebar>
+					{this.renderContent()}
+				</Sidebar>
+				<Modal />
+				<ReactImages />
+			</>
 		);
 	}
 
