@@ -1,0 +1,12 @@
+{
+	"1000": "InternalServerError",
+	"1001": "NotFound",
+	"1002": "ValidationError",
+	"1003": "InvalidId",
+	"1004": "InvalidToken",
+	"1005": "PasswordNotMatch",
+	"1006": "MissingCredentials",
+	"1007": "InvalidCredential",
+	"1008": "InsufficientPermissions",
+	"1009": "InvalidUser"
+}

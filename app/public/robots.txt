@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://nextjs.kenyip.cc/sitemap
+Disallow: /api/*

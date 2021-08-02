@@ -1,0 +1,379 @@
+$primary: #0088fe;
+$success: #10cfbd;
+$danger: #f55753;
+$warning: #f8d053;
+$info: #3b4752;
+
+
+html,
+body,
+#root {
+	height: 100%;
+	width: 100%;
+	background-color: #efefef;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+//== Common
+//
+//##
+
+.content-group {
+	margin: 10px 20px;
+}
+
+.meta {
+    font-size: 13px;
+    color: #686868;
+	// color: $gray-light;
+}
+
+.buttons {
+	& > .btn {
+		margin-left: 5px;
+	}
+}
+
+.display-block {
+    display: block !important;
+}
+
+.text-divider {
+	display: flex;
+	margin: 10px 0 0 0;
+	align-items: center;
+	justify-content: center;
+}
+
+//== ReactModal
+//
+//##
+
+.ReactModal__Overlay {
+	opacity: 0;
+	transition: opacity 200ms ease-in-out;
+	outline: none;
+}
+
+.ReactModal__Overlay--after-open {
+	opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+	opacity: 0;
+}
+
+.ReactModal__Content {
+	outline: none;
+}
+
+//== Lihkg Scrollbar
+//
+//##
+
+::-webkit-scrollbar {
+	width: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background-clip: padding-box;
+	background-color: rgba(128, 128, 128, 0.4);
+	border: 2px solid transparent;
+	border-radius: 0.8rem;
+	-webkit-box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.05), inset 1px 1px 0 rgba(0, 0, 0, 0.05);
+	box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.05), inset 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.error-page > div > main > div {
+	background: transparent !important;
+}
+
+.shipping-simulate__label {
+	font-size: 1.75rem;
+	margin-bottom: 12px;
+}
+
+.shipping-simulate__no-data {
+	padding: 1rem;
+	min-height: 360px;
+	border: 2px dashed lightgray;
+	display: flex;
+	color: gray;
+	align-items: center;
+	justify-content: center;
+}
+
+.simulation-col {
+	min-height: 360px;
+}
+
+.radio-inline:first-child {
+	padding-left: 0;
+}
+
+.table-pending {
+	font-size: 1.4rem;
+	text-align: center;
+	padding: 0.8rem;
+}
+
+.search-button {
+	margin-top: 3rem;
+	padding-left: 0 !important;
+}
+
+.custom-day-picker-width100, .custom-day-picker-width100 > .DayPickerInput {
+	width: 100%;
+}
+
+.custom-day-picker > .DayPickerInput > input {
+	font-size: 14px;
+	width: 100%;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+.custom-day-picker-add-on > .DayPickerInput {
+	display: block;
+}
+
+.custom-day-picker-add-on > .DayPickerInput > div {
+	z-index: 2;
+}
+
+.custom-day-picker > div > input::placeholder {
+	color: #565656 !important;
+}
+
+.DayPickerInput > input::placeholder {
+	color: #989898;
+}
+
+.DayPicker {
+	width: 100%;
+	font-size: 1.5rem !important;
+}
+
+
+.card {
+    position: relative;
+    margin-bottom: 16px;
+    border-top: 1px solid #0088fe;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.meta-red {
+	color: red;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.table-pagination {
+    position: relative;
+    display: flex;
+}
+
+.table-pagination > a {
+    font-size: 13px;
+    box-sizing: border-box;
+    color: black;
+    height: 32px;
+    min-width: 32px;
+    padding: 7px;
+    border-radius: 2px;
+    text-align: center;
+    display: block;
+}
+
+.table-pagination > a.disabled{
+    color: rgb(187, 187, 187);
+    cursor: unset;
+}
+
+.table-pagination > a:hover {
+    background-color: #f5f5f5;
+}
+
+.table-pagination > a.prev, a.next {
+    /* color: rgb(187, 187, 187); */
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-pagination > a.active {
+    background-color: #455A64;
+    color: white;
+}
+
+
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+    &> span {
+        line-height: 32px;
+    }
+}
+
+.table-pagination > div.right {
+    display: -webkit-box;
+    display: flex;
+    padding-right: 6px;
+    text-align: right;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+}
+
+.table-pagination > div.left {
+    font-size: 13px;
+    display: -webkit-box;
+    display: flex;
+    padding: 0 8px;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.table-scroll {
+	margin-top: 2rem;
+	border-top: 0 !important;
+}
+
+//download input css
+.download-input-container {
+	display: flex;
+}
+
+.di_input {
+	width: 50%;
+}
+
+.di__button {
+	flex: 1;
+}
+
+.resultPanel__padding {
+	padding-bottom: 8px;
+}
+
+.resultPanel__noPadding {
+	padding-bottom: 0px;
+}
+
+.scroll-up-div a {
+    display: block;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 999999999;
+    color: #eee;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all .25s ease;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.scroll-up-div a:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.scroll-up-div a {
+	bottom: 15px;
+	right: 15px;
+}
+
+.panel__Centered {
+	max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 22px;
+}
+
+.panel__half {
+    // width: 50%;
+    margin: 0 auto;
+}
+
+.labelSameLineDiv {
+	width: 50%;
+    margin: 0px auto;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.8rem;
+}
+
+.fullWidthSameLine {
+    width: 100% !important;
+}
+
+.labelSameLineDiv > input {
+    flex: 3;
+}
+
+.longLabelSameLineDiv > input {
+    flex: 3;
+}
+
+.labelSameLineDivFull {
+	width: 100%;
+    margin: 0px auto;
+    display: flex;
+    align-items: center;
+}
+
+.longLabelSameLineDiv {
+	width: 68%;
+    margin: 0px auto;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.8rem;
+}
+
+.labelSameLineDiv__span {
+	margin-right: 1rem;
+    margin-top: 1rem;
+    flex: 1;
+}
+
+.longLabelSameLineDiv__span {
+	margin-right: 1rem;
+    margin-top: 1rem;
+    flex: 1.3 1;
+}
+
+.labelSameLineRowMulti {
+	width: 95%;
+    margin: 0 auto;
+    margin-bottom: 1.8rem;
+}
+
+.form-control-flex {
+	// width: auto !important;
+	flex: 1;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.footer__flex {
+	display: flex;
+	justify-content: space-between;
+}
+
+
+
+/*
+
+    MEDIA QUERIES
+
+*/
+
+

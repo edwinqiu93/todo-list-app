@@ -1,0 +1,9 @@
+.vscode
+node_modules
+.editorconfig
+.env
+.eslintignore
+.eslintrc.js
+.gitignore
+README.md
+makefile

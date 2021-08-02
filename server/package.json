@@ -1,0 +1,48 @@
+{
+	"name": "nodejs-starter",
+	"version": "2.1.0",
+	"author": "Edwin Qiu",
+	"description": "Backend API for TODO List Project",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js",
+		"dev": "nodemon src/index.js",
+		"lint": "NODE_ENV=testing && eslint . --ext .js"
+	},
+	"private": true,
+	"keywords": [],
+	"license": "ISC",
+	"dependencies": {
+		"aws-sdk": "^2.775.0",
+		"axios": "^0.20.0",
+		"body-parser": "^1.19.0",
+		"compression": "^1.7.4",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"express-joi-verifier": "^1.0.0",
+		"express-promise-router": "^4.0.1",
+		"fire-proxy": "^2.0.3",
+		"helmet": "^4.1.0",
+		"joi": "^14.3.1",
+		"joi-to-swagger": "^3.3.0",
+		"jsonwebtoken": "^8.5.1",
+		"ken.yip": "^2.0.5",
+		"lodash": "^4.17.20",
+		"mem": "^6.1.1",
+		"mongoose": "^5.10.9",
+		"morgan": "^1.10.0",
+		"mysql-plugin": "^1.2.5",
+		"passport": "^0.4.1",
+		"passport-http-bearer": "^1.0.1",
+		"passport-local": "^1.0.0",
+		"pug": "^3.0.0",
+		"winston": "^3.3.3"
+	},
+	"devDependencies": {
+		"dotenv": "^8.2.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	}
+}

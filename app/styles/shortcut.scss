@@ -1,0 +1,48 @@
+.display-block {
+	display: block !important;
+}
+
+.display-inline-block {
+	display: inline-block !important;
+}
+
+.no-padding {
+	padding: 0 !important;
+}
+
+.height-0 {
+	height: 0 !important;
+}
+
+.text-semibold {
+	font-weight: 500;
+}
+
+.text-center {
+	text-align: center;
+}
+
+@for $i from 0 through 100 {
+	.width#{$i} {
+		width: percentage($i/100);
+	}
+}
+
+@for $i from 0 through 50 {
+	.margin-right-#{$i} {
+		margin-right: #{$i}px !important;
+	}
+	.margin-left-#{$i} {
+		margin-left: #{$i}px !important;
+	}
+	.margin-top-#{$i} {
+		margin-top: #{$i}px !important;
+	}
+	.margin-bottom-#{$i} {
+		margin-bottom: #{$i}px !important;
+	}
+}
+
+.distance > * {
+	margin: 0 0.6rem 0.6rem 0;
+}

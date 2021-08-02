@@ -1,0 +1,98 @@
+$primary: #0088fe;
+$success: #10cfbd;
+$danger: #f55753;
+$warning: #f8d053;
+$info: #3b4752;
+
+// $types: "primary", "success", "danger", "warning", "info";
+// $positions: "top", "right", "bottom", "left";
+// @each $type in "primary", "success", "danger", "warning", "info" {
+// 	@each $position in "top", "right", "bottom", "left" {
+// 		.border-#{$position}-#{$type} {
+// 			border-#{$position}-color: #{"$" + $type} !important;
+// 		}
+// 	}
+// }
+
+// == Border
+// 
+// ##
+.border-top-primary {
+	border-top-color: $primary !important;
+}
+
+.border-top-success {
+	border-top-color: $success !important;
+}
+
+.border-top-danger {
+	border-top-color: $danger !important;
+}
+
+.border-top-warning {
+	border-top-color: $warning !important;
+}
+
+.border-top-info {
+	border-top-color: $info !important;
+}
+
+.border-left-primary {
+	border-left-color: $primary !important;
+}
+
+.border-left-success {
+	border-left-color: $success !important;
+}
+
+.border-left-danger {
+	border-left-color: $danger !important;
+}
+
+.border-left-warning {
+	border-left-color: $warning !important;
+}
+
+.border-left-info {
+	border-left-color: $info !important;
+}
+
+.border-right-primary {
+	border-right-color: $primary !important;
+}
+
+.border-right-success {
+	border-right-color: $success !important;
+}
+
+.border-right-danger {
+	border-right-color: $danger !important;
+}
+
+.border-right-warning {
+	border-right-color: $warning !important;
+}
+
+.border-right-info {
+	border-right-color: $info !important;
+}
+
+.border-bottom-primary {
+	border-bottom-color: $primary !important;
+}
+
+.border-bottom-success {
+	border-bottom-color: $success !important;
+}
+
+.border-bottom-danger {
+	border-bottom-color: $danger !important;
+}
+
+.border-bottom-warning {
+	border-bottom-color: $warning !important;
+}
+
+.border-bottom-info {
+	border-bottom-color: $info !important;
+}
