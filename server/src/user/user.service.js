@@ -1,14 +1,15 @@
 const bcrypt = require('bcryptjs')
 const xss = require('xss')
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
+const REGEX_UPPER_LOWER_NUMBER = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\S]+/;
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 
 const UsersService = {
 
-    getUserWithUserName(db, username) {
+    getUserWithUserName(db, user_id) {
         return db('users')
-          .where({ username })
+          .where({ user_id })
           .first()
     },
 
@@ -22,9 +23,9 @@ const UsersService = {
         return bcrypt.compare(password, hash)
     },    
     
-    checkIfUserExists (username , db) {
+    checkIfUserExists(user_id, db) {
         return db('users')
-        .where('username', username)
+        .where('user_id', user_id)
         .first()
         .then(user => !!user)
     },
@@ -45,16 +46,16 @@ const UsersService = {
 
     validatePassword (password) {
         if (password.length < 8) {
-            return 'Password must be longer than 8 characters'
+            return 'Password must be longer than 8 characters';
           }
           if (password.length > 72) {
-            return 'Password must be less than 72 characters'
+            return 'Password must be less than 72 characters';
           }
           if (password.startsWith(' ') || password.endsWith(' ')) {
-            return 'Password must not start or end with empty spaces'
+            return 'Password must not start or end with empty spaces';
           }
-          if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
-            return 'Password must contain one upper case, lower case, number and special character'
+          if (!REGEX_UPPER_LOWER_NUMBER.test(password)) {
+            return 'Password must contain one Upper case, Lower case, and Number';
           }
           return null
     },
@@ -75,8 +76,7 @@ const UsersService = {
 
     serializeUser (user) {
         return {
-            id: user.id,
-            username: xss(user.username)
+            user_id: xss(user.user_id)
         }
     },
 
@@ -98,10 +98,10 @@ const UsersService = {
         }
     },
 
-    updateUser (db, userId, info) {
+    updateUser (db, user_id, info) {
         return db
             .from('users')
-            .where('id', userId)
+            .where('user_id', user_id)
             .update(info)
             .returning('*')
             .then(rows => {
