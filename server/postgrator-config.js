@@ -1,7 +1,7 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
-    "migrationDirection": "migrations",
+    "migrationDirectory": "migrations",
     "driver": "pg",
     "host": process.env.MIGRATIONS_DB_HOST,
     "port": process.env.MIGRATIONS_DB_PORT,
