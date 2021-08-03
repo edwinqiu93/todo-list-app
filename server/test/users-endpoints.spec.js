@@ -7,22 +7,22 @@ const jwt = require("jsonwebtoken")
 describe("Users Endpoints", function() {
   let db
 
-  const { testUsers } = helpers.makeArticlesFixtures()
-  const testUser = testUsers[0]
+  const { testUsers, testTasks } = helpers.makeArticlesFixtures();
+  const testUser = testUsers[0];
 
   before("make knex instance", () => {
     db = knex({
       client: "pg",
       connection: process.env.TEST_DB_URL,
     })
-    app.set("db", db)
+    app.set("db", db);
   })
 
-  after("disconnect from db", () => db.destroy())
+  after("disconnect from db", () => db.destroy());
 
-  before("cleanup", () => helpers.cleanTables(db))
+  before("cleanup", () => helpers.cleanTables(db));
 
-  afterEach("cleanup", () => helpers.cleanTables(db))
+  afterEach("cleanup", () => helpers.cleanTables(db));
 
   describe(`POST /api/users/register`, () => {
     context(`User Validation`, () => {
@@ -33,23 +33,21 @@ describe("Users Endpoints", function() {
         )
       )
 
-      const requiredFields = ["username", "password"]
+      const requiredFields = ["user_id", "password"]
 
       requiredFields.forEach(field => {
         const registerAttemptBody = {
-          username: "test username",
+          user_id: "test username",
           password: "test password"
         }
 
         it(`responds with 400 required error when "${field}" is missing`, () => {
-          delete registerAttemptBody[field]
+          delete registerAttemptBody[field];
 
           return supertest(app)
             .post("/api/users/register")
             .send(registerAttemptBody)
-            .expect(400, {
-              error: `Missing "${field}" in request body`,
-            })
+            .expect(400, `Please fill in the ${field} field and resubmit.`)
         })
       })
 

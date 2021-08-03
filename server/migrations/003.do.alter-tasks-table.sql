@@ -1,8 +1,8 @@
-CREATE TYPE Completed AS ENUM (
+CREATE TYPE completed AS ENUM (
    'Y',
    'N'
 );
 
 ALTER TABLE Tasks
     ADD COLUMN
-        Completed Completed;
+        completed completed;

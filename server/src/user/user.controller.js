@@ -3,7 +3,7 @@ let UsersService = require("./user.service");
 
 async function registerAccount(req, res) {
     const { user } = req.body;
-    const { user: { username, password }} = req.body;
+    const { user: { user_id, password }} = req.body;
     console.log("user", user);
 
     for (let field in user) {
@@ -18,7 +18,7 @@ async function registerAccount(req, res) {
         return res.status(400).json(passwordError);
     }
 
-    UsersService.checkIfUserExists(username, db)
+    UsersService.checkIfUserExists(user_id, db)
             .then(user => {
                 if (user) {
                     return res.status(400).json(`Username already taken`);
@@ -26,7 +26,7 @@ async function registerAccount(req, res) {
                 return UsersService.hashPassword(password)
                     .then(hashedPassword => {
                         let newUser = {
-                            username,
+                            user_id,
                             password: hashedPassword
                         }
                         return UsersService.insertUser(newUser, db)
