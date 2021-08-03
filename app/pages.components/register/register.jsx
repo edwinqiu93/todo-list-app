@@ -13,7 +13,6 @@ import classnames from "classnames";
 
 @connect()
 class Register extends React.Component {
-
     
 	state = {
         payload: {
