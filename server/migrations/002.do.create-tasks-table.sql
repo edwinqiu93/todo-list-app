@@ -3,6 +3,6 @@ CREATE TABLE Tasks (
     TaskTitle varchar(60) NOT NULL,
     TaskDescription varchar(255) DEFAULT NULL,
     DueDate TIMESTAMP DEFAULT NULL,
-    UserId INTEGER REFERENCES Users(id) ON DELETE CASCADE NOT NULL,
+    UserId varchar(30) REFERENCES Users(UserId) ON DELETE CASCADE NOT NULL,
     EnterDate TIMESTAMP DEFAULT now() NOT NULL
 );

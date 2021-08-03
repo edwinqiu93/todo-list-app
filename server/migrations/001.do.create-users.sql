@@ -1,6 +1,5 @@
 CREATE TABLE Users (
-    id SERIAL PRIMARY KEY,
-    Username varchar(30) NOT NULL UNIQUE,
+    UserId varchar(30) NOT NULL PRIMARY KEY,
     Password varchar(150) NOT NULL,
     EnterDate TIMESTAMP DEFAULT now() NOT NULL
 );
