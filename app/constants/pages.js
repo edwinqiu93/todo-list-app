@@ -4,7 +4,7 @@ const pages = [
 	"Main",
 	{
 		type: "page",
-		name: "TODO List",
+		name: "To Do List",
 		icon: "fa fa-home",
 		page: "/dashboard",
 	}

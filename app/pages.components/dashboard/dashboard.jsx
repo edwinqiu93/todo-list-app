@@ -46,7 +46,10 @@ class Dashboard extends React.Component {
 
 		return (
 			<div className="container-fluid" id="dashboard_top">
-				Dashboard
+				<div>
+					<i onClick={this.renderAddForm} className="fa fa-plus-circle"></i>
+					Add Task 
+				</div>
 			</div>
 		);
 	}
