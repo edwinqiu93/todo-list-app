@@ -17,7 +17,7 @@ class Register extends React.Component {
 	state = {
         payload: {
             password: "",
-            username: "",
+            user_id: "",
             confirmPassword: "",
         },
         loading: false
@@ -32,10 +32,10 @@ class Register extends React.Component {
     handleSubmit = async (event) => {
         event.preventDefault();
 
-        const { username, password, confirmPassword } = this.state.payload;
+        const { user_id, password, confirmPassword } = this.state.payload;
 
-        if (username.trim() === "" || password.trim() === "") {
-            return window.alert("Username and password can't be empty");
+        if (user_id.trim() === "" || password.trim() === "") {
+            return window.alert("User ID and Password can't be empty");
         }
 
         if (password !== confirmPassword) {
@@ -43,7 +43,7 @@ class Register extends React.Component {
         }
 
         let newUser = {
-            username,
+            user_id,
             password
         }
 
@@ -76,8 +76,8 @@ class Register extends React.Component {
                             <form className="LoginForm" onSubmit={this.handleSubmit}>
                                 <div className="LoginForm__signupElement">
                                     <div className="LoginForm__signupLabel">
-                                        <label htmlFor="username">
-                                            Username    
+                                        <label htmlFor="user_id">
+                                            User ID    
                                         </label>
                                         <span className="astrik">
                                             *
@@ -85,11 +85,11 @@ class Register extends React.Component {
                                     </div>
                                     <div className="LoginForm__signupLabel">
                                         <input 
-                                            id="username" 
-                                            name="username" 
+                                            id="user_id" 
+                                            name="user_id" 
                                             // type="text" 
-                                            value={payload.username} 
-                                            onChange={event => this.handleChange("payload.username")(event.target.value)}
+                                            value={payload.user_id} 
+                                            onChange={event => this.handleChange("payload.user_id")(event.target.value)}
                                         />
                                     </div>
                                 </div>

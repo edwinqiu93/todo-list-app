@@ -12,7 +12,7 @@ import "../styles/index.scss";
 import 'react-day-picker/lib/style.css';
 import IdleService from "../services/idle-service";
 import TokenService from "../services/token-service";
-import UsersService from "../services/user-api-service";
+import * as api from "api";
 
 moment.prototype.standard = function () {
 	return this.format("Do MMMM, YYYY hh:mm a");
@@ -41,34 +41,27 @@ class App extends NextApp {
 		IdleService.setIdleCallback(this.logoutFromIdle);
 		if (TokenService.hasAuthToken()) {
 		  IdleService.registerIdleTimerResets();
-		  TokenService.queueCallbackBeforeExpiry(() => {
-			console.log("token service que called");
-			UsersService.postRefreshToken();
-		  })
+		  TokenService.queueCallbackBeforeExpiry(async () => {
+			await api.user.postRefreshToken;
+		})
 		} 
 	}
 	
 	componentWillUnmount() {
-		console.log("app unmounted");
 		IdleService.unRegisterIdleResets();
 		TokenService.clearCallbackBeforeExpiry();
 	}
 	
 	logoutFromIdle = () => {
-		console.log("logout invoked");
 		TokenService.clearAuthToken();
 		TokenService.clearCallbackBeforeExpiry();
 		IdleService.unRegisterIdleResets();
-	
-		this.props.history.push('/');
-		// this.forceUpdate()
+		return Router.push("/");
 	}
 
 	render() {
 		const { Component, pageProps, store } = this.props;
 		// console.log("Component", Component);
-		// console.log("pageProps", pageProps);
-		// console.log("store", store);
 		return (
 			<>
 				<Head>

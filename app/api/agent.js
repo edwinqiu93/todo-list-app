@@ -1,11 +1,9 @@
 "use strict";
 const axios = require("axios");
-const TokenService = require("../services/token-service");
-const store = require("../store");
+import TokenService from "../services/token-service";
 
 function get() {
-	// console.log("store", store.getStore().getState());
-	const access_token = store.getStore().getState().base.access_token;
+	const access_token = TokenService.getAuthToken();
 	const headers = {};
 	if (access_token)
 		headers["Authorization"] = `Bearer ${access_token}`;

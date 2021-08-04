@@ -10,19 +10,19 @@ import css from "./login.module.scss";
 import Link from "next/link";
 import classnames from "classnames";
 // import { withRouter } from "next/router";
+import IdleService from "../../services/idle-service";
+import TokenService from "../../services/token-service";
 
 @connect()
 class Login extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			credential: {
-				username: "", password: "",
-			},
-			loading: false, loaded: true
-		};
-	}
+	state = {
+        payload: {
+            password: "",
+            user_id: ""
+        },
+        loading: false
+    }
 
 	handleChange = path => value => {
 		const state = { ... this.state };
@@ -30,9 +30,43 @@ class Login extends React.Component {
 		this.setState(state);
 	};
 
+	handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const { user_id, password } = this.state.payload;
+
+        if (user_id.trim() === "" || password.trim() === "") {
+            return window.alert("User ID and Password can't be empty");
+		}
+		
+		let loginUser = {
+			user_id,
+			password
+		}
+
+        try {
+            this.setState({ loading: true });
+			let respJson = await api.user.login(loginUser);
+			if (respJson) {
+				TokenService.saveAuthToken(respJson.authToken);
+				IdleService.registerIdleTimerResets();
+				TokenService.queueCallbackBeforeExpiry(async () => {
+				  await api.user.postRefreshToken();
+				})
+				this.setState({ loading: false });
+				return Router.push("/dashboard");
+			}
+     
+        } catch (error) {
+            console.error(error);
+			window.alert(error.response?.data ?? error.message);
+			return this.setState({ loading: false });
+        }
+    }
+
 	render() {
-		const { loading } = this.state;
-		// const { username, password } = this.state.credential;
+		const { payload, loading } = this.state;
+		console.log("state", this.state);
 		return (
 			<>
 				<div className={classnames(css.bg)} />
@@ -43,13 +77,21 @@ class Login extends React.Component {
 						<form className="LoginForm" onSubmit={this.handleSubmit}>
 							<div className="LoginForm__signupElement">
 								<div className="LoginForm__signupLabel">
-									<label htmlFor="username">
-										Username    
+									<label htmlFor="user_id">
+										User ID    
 									</label>
 									<span className="astrik">
 										*
 									</span>
-									<input id="username" name="username" type="text" placeholder="demo" required/> 
+									<input 
+										id="user_id" 
+										name="user_id" 
+										// type="text" 
+										value={payload.user_id} 
+										onChange={event => this.handleChange("payload.user_id")(event.target.value)}
+										required
+										placeholder="demo"
+                                    />
 								</div> 
 							</div>
 							<div className="LoginForm__signupElement">
@@ -58,7 +100,15 @@ class Login extends React.Component {
 										Password    
 									</label>
 									<span className="astrik">*</span>
-									<input id="password" name="password" type="password" placeholder="Testing123!"  required/> 
+									<input 
+										id="password" 
+										name="password" 
+										type="password" 
+										value={payload.password} 
+										onChange={event => this.handleChange("payload.password")(event.target.value)}
+										required
+										placeholder="Testing123"
+									/>
 								</div>
 							</div>
 							<div className="signin-button">
@@ -68,8 +118,8 @@ class Login extends React.Component {
 							</div>
 							<div className="LoginForm__loginDemo">
 								<h4>Demo Account</h4>
-								<p>Username: demo</p>
-								<p>Password: Testing123!</p>
+								<p>User ID: demo</p>
+								<p>Password: Testing123</p>
 							</div>
 							<div className="LoginForm__redirect">
 								<Link href="/register"><a>Don"t have an account? Create one.</a></Link>

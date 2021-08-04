@@ -64,8 +64,6 @@ class Main extends React.Component {
 	}
 
 	getSidebar = () => {
-		console.log("in sidebar")
-
 		let sidebar = JSON.parse(JSON.stringify(pages.sidebar));
 		// if (process.env.NEXT_PUBLIC_PERMISSION_ENABLED !== "true")
 		// 	return sidebar;
@@ -94,7 +92,6 @@ class Main extends React.Component {
 				return true;
 			});
 
-		console.log("sidebar", sidebar);
 		return sidebar;
 	}
 
@@ -104,7 +101,6 @@ class Main extends React.Component {
 				<ul className={css["sidebar-list-narrow"]}>
 					{
 						this.getSidebar().map((item, index) => {
-							console.log("sidebar item", item);
 							if (typeof item == "string")
 								return (
 									<React.Fragment key={index} />
