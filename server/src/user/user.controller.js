@@ -45,7 +45,7 @@ async function registerAccount(req, res) {
             })
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
     const { user } = req.body;
     const { user: { user_id, password }} = req.body;
     const db = req.app.get('db')
@@ -60,8 +60,11 @@ async function login(req, res) {
         }
     }
 
+    console.log("loginUser", loginUser);
+
     UsersService.getUserWithUserName(db, loginUser.user_id)
         .then(dbUser => {
+            console.log("db user", dbUser);
             if (!dbUser) {
                 return res.status(400).json(`Incorrect Username or Password`);
             }
@@ -74,6 +77,7 @@ async function login(req, res) {
                         
                     const sub = dbUser.user_id
                     const payload = { user_id: dbUser.user_id }
+                    console.log("payload", payload);
 
                     res.send({
                         authToken: UsersService.createJwt(sub, payload)
@@ -83,8 +87,17 @@ async function login(req, res) {
         .catch(next)
 }
 
+async function refreshToken(req, res) {
+    const sub = req.user.user_id
+    const payload = { user_id: req.user.user_id }
+    res.send({
+        authToken: UsersService.createJwt(sub, payload),
+    })
+}
+
 module.exports = {
     registerAccount,
-    login
+    login,
+    refreshToken
 }
 
