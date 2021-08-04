@@ -10,7 +10,8 @@ body,
 #root {
 	height: 100%;
 	width: 100%;
-	background-color: #efefef;
+    background-color: #efefef;
+    font-size: 12px;
 }
 
 html {
@@ -134,7 +135,7 @@ input {
 }
 
 .custom-day-picker > .DayPickerInput > input {
-	font-size: 14px;
+	font-size: 12px;
 	width: 100%;
 	padding: 6px 12px;
 	border: 1px solid #ccc;
@@ -174,7 +175,7 @@ input {
 
 .meta-red {
 	color: red;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: 400;
 }
 
@@ -374,10 +375,28 @@ input {
 
 
 
+
 /*
 
     MEDIA QUERIES
 
 */
+
+@media screen and (min-width: 768px) {
+
+    .panel-flex-container {
+        display: flex;
+    }
+    
+    .panel-flex-container > :first-child {
+        margin-right: 1.5rem;
+    }
+    
+    .panel-flex-container > div {
+        flex: 1;
+    }
+}
+
+
 
 
