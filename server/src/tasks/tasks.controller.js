@@ -67,8 +67,30 @@ async function deleteTask(req, res, next) {
             .catch(next)
 }
 
+async function updateTask(req, res, next) {
+    let db = req.app.get('db');
+    let { task_id } = req.params;
+    console.log("task id", task_id)
+
+    let updatedTask = {
+        completed: "Y"
+    }
+
+    return TasksService.updateTask(db, task_id, updatedTask)
+            .then(task => {
+                // console.log("returned updated task", task);
+                if (task.due_date) {
+                    task.due_date = moment.utc(task.due_date).local().format("YYYY-MM-DD hh:mm A");
+                }
+
+                return res.json(TasksService.serializeTask(task));
+            })
+            .catch(next)
+}
+
 module.exports = {
     createTask,
     getAllTasks,
-    deleteTask
+    deleteTask,
+    updateTask
 }

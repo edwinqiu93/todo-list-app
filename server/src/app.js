@@ -21,19 +21,6 @@ app.use((error, req, res, next) => {
 	if (error.isAppError)
 		error.status = error.statusCode || 400;
 
-	// customize Joi validation errors
-	if (error.isJoi) {
-		res.status(400).json({
-			error: {
-				code: 1002,
-				type: "ValidationError",
-				message: "Request body is not matched to schema",
-				details: error.details.map(item => item.message)
-			}
-		});
-		return next(error);
-	}
-
 	switch (error.status) {
 		case 404:
 			res.status(error.status).json({

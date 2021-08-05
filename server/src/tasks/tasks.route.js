@@ -13,5 +13,6 @@ router
 router
     .route("/:task_id")
     .delete(auth, controller.deleteTask)
+    .patch(auth, controller.updateTask)
 
 module.exports = router;

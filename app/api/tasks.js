@@ -22,8 +22,16 @@ async function deleteTask(id) {
 		.then(resp => resp);
 }
 
+async function updateTask(id) {
+    return agent
+		.get()
+		.patch(`/api/tasks/${id}`)
+		.then(resp => resp.data);
+}
+
 module.exports = {
     createTask,
     getAllTasks,
-    deleteTask
+    deleteTask,
+    updateTask
 }

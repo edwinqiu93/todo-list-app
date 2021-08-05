@@ -79,7 +79,23 @@ class Dashboard extends React.Component {
             window.alert(error.response?.data ?? error.message);
             this.setState({ loading: false });
         }
+	}
 
+	updateComplete = async (id) => {
+		try {
+			this.setState({ loading: true });
+			let returnedItem = await api.tasks.updateTask(id);
+			console.log("returned Item", returnedItem);
+			this.setState({ 
+				loading: false,
+				data: this.state.data.map(task => (task.task_id == returnedItem.task_id) ? returnedItem : task)
+			})
+
+		} catch (error) {
+            console.error(error);
+            window.alert(error.response?.data ?? error.message);
+            this.setState({ loading: false });
+        }
 	}
 
 	render(){
@@ -184,7 +200,7 @@ class Dashboard extends React.Component {
 													<div className="btn-div">
 														<i 
 															className="btn-icons icon-circle"
-															onClick={this.handleEditForm}
+															onClick={() => this.updateComplete(task.task_id)}
 															onMouseEnter={() => this.setState({ checked: true })}
 															onMouseLeave={() => this.setState({ checked: false })}
 														>
@@ -224,7 +240,38 @@ class Dashboard extends React.Component {
 						loading={loading}
 						icon="fa fa-check-square-o"
                     >
-
+						<ul className="task-ul">
+							{
+								loaded && !loading && data.length && data.map((task, i) => {
+									if (task.completed == "Y") {
+										return (
+											<div className='task-section' key={i}>
+												<div style={{ display: "flex", justifyContent: "space-between" }}>
+													<li className='task-results-list line-through'>
+														<strong> {task.task_title}</strong> 
+													</li>
+													<div className="btn-div">
+														<i className="btn-icons icon-checkmark-circle"></i>														
+													</div>
+												</div>
+												<div className={'task-info-div ' +  (!task.due_date ? 'hidden' : '') }>
+													<span className='task-details-title line-through'>Due Date</span><i className="fa fa-caret-right"></i><span className='task-details'>{task.due_date}</span> 
+												</div>
+												<div className={'task-info-div ' +  (!task.task_description ? 'hidden' : '') }>
+													<span className='task-details-title line-through'>
+														Description
+													</span>
+													<i className="fa fa-caret-right"></i>
+													<span className='task-details'>
+														{task.task_description}
+													</span>
+												</div>
+											</div>
+										)
+									}	
+								})
+							}
+						</ul>
 					</Panel>
 				</div>
 			</div>

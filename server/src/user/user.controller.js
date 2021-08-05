@@ -2,7 +2,7 @@
 let UsersService = require("./user.service");
 const path = require("path");
 
-async function registerAccount(req, res) {
+async function registerAccount(req, res, next) {
     const { user } = req.body;
     const { user: { user_id, password }} = req.body;
     const db = req.app.get("db");
@@ -40,9 +40,12 @@ async function registerAccount(req, res) {
                                     .status(201)
                                     .location(path.posix.join(req.originalUrl, `/${insertedUser.id}`))
                                     .json(UsersService.serializeUser(insertedUser))
-                            })  
+                            })
+                            .catch(next)  
                     })
+                    .catch(next)
             })
+            .catch(next)
 }
 
 async function login(req, res, next) {
@@ -83,6 +86,7 @@ async function login(req, res, next) {
                         authToken: UsersService.createJwt(sub, payload)
                     })
                 })
+                .catch(next)
         })
         .catch(next)
 }
