@@ -148,12 +148,6 @@ function cleanTables(db) {
         users
       `
     )
-    .then(() =>
-      Promise.all([
-        trx.raw(`ALTER SEQUENCE tasks_task_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`SELECT setval('tasks_task_id_seq', 0)`)
-      ])
-    )
   )
 }
 
@@ -162,14 +156,7 @@ function seedUsers(db, users) {
     ...user,
     password: bcrypt.hashSync(user.password, 1)
   }))
-  return db.into('users').insert(preppedUsers)
-    .then(() =>
-      // update the auto sequence to stay in sync
-      db.raw(
-        `SELECT setval('users_user_id_seq', ?)`,
-        [users[users.length - 1].user_id],
-      )
-    )
+  return db.into('users').insert(preppedUsers);
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {

@@ -24,7 +24,7 @@ describe("Users Endpoints", function() {
 
   afterEach("cleanup", () => helpers.cleanTables(db));
 
-  describe(`POST /api/users/register`, () => {
+  describe(`POST /api/user/register`, () => {
     context(`User Validation`, () => {
       beforeEach("insert users", () =>
         helpers.seedUsers(
@@ -45,8 +45,8 @@ describe("Users Endpoints", function() {
           delete registerAttemptBody[field];
 
           return supertest(app)
-            .post("/api/users/register")
-            .send(registerAttemptBody)
+            .post("/api/user/register")
+            .send({ user: registerAttemptBody })
             .expect(400, `Please fill in the ${field} field and resubmit.`)
         })
       })
@@ -58,8 +58,8 @@ describe("Users Endpoints", function() {
           
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(userShortPassword)
+          .post("/api/user/register")
+          .send({ user: userShortPassword })
           .expect(400, `Password must be longer than 8 characters`)
       })
 
@@ -70,8 +70,8 @@ describe("Users Endpoints", function() {
         
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(userLongPassword)
+          .post("/api/user/register")
+          .send({ user: userLongPassword })
           .expect(400, `Password must be less than 72 characters`)
       })
 
@@ -82,8 +82,8 @@ describe("Users Endpoints", function() {
          
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(userPasswordStartsSpaces)
+          .post("/api/user/register")
+          .send({ user: userPasswordStartsSpaces })
           .expect(400, `Password must not start or end with empty spaces`)
       })
 
@@ -94,8 +94,8 @@ describe("Users Endpoints", function() {
          
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(userPasswordEndsSpaces)
+          .post("/api/user/register")
+          .send({ user: userPasswordEndsSpaces })
           .expect(400, `Password must not start or end with empty spaces`)
       })
 
@@ -106,8 +106,8 @@ describe("Users Endpoints", function() {
          
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(userPasswordNotComplex)
+          .post("/api/user/register")
+          .send({ user: userPasswordNotComplex })
           .expect(400, `Password must contain one Upper case, Lower case, and Number`)
       })
 
@@ -118,8 +118,8 @@ describe("Users Endpoints", function() {
          
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(duplicateUser)
+          .post("/api/user/register")
+          .send({ user: duplicateUser })
           .expect(400, `Username already taken`)
       })
     })
@@ -132,14 +132,14 @@ describe("Users Endpoints", function() {
          
         }
         return supertest(app)
-          .post("/api/users/register")
-          .send(newUser)
+          .post("/api/user/register")
+          .send({ user: newUser })
           .expect(201)
           .expect(res => {
             expect(res.body).to.have.property("id")
             expect(res.body.user_id).to.eql(newUser.user_id)
             expect(res.body).to.not.have.property("password")
-            expect(res.headers.location).to.eql(`/api/users/register/${res.body.user_id}`)
+            expect(res.headers.location).to.eql(`/api/user/register/${res.body.user_id}`)
           })
           .expect(res =>
             db
@@ -160,7 +160,7 @@ describe("Users Endpoints", function() {
     })
   })
 
-  describe(`POST /api/users/login`, () => {
+  describe(`POST /api/user/login`, () => {
     beforeEach("insert users", () =>
       helpers.seedUsers(
         db,
@@ -180,8 +180,8 @@ describe("Users Endpoints", function() {
         delete loginAttemptBody[field]
 
         return supertest(app)
-          .post("/api/users/login")
-          .send(loginAttemptBody)
+          .post("/api/user/login")
+          .send({ user: loginAttemptBody })
           .expect(400, `Missing "${field}" in request body`)
       })
     })
@@ -189,16 +189,16 @@ describe("Users Endpoints", function() {
     it(`responds 400 "invalid username or password" when bad username`, () => {
       const userInvalidUser = { user_id: "user-not", password: "existy" }
       return supertest(app)
-        .post("/api/users/login")
-        .send(userInvalidUser)
+        .post("/api/user/login")
+        .send({ user: userInvalidUser })
         .expect(400, `Incorrect Username or password`)
     })
 
     it(`responds 400 "invalid username or password" when bad password`, () => {
       const userInvalidPass = { user_id: testUser.user_id, password: "incorrect" }
       return supertest(app)
-        .post("/api/users/login")
-        .send(userInvalidPass)
+        .post("/api/user/login")
+        .send({ user: userInvalidPass })
         .expect(400, `Incorrect Username or password`)
     })
 
@@ -217,8 +217,8 @@ describe("Users Endpoints", function() {
         }
       )
       return supertest(app)
-        .post("/api/users/login")
-        .send(userValidCreds)
+        .post("/api/user/login")
+        .send({ user: userValidCreds })
         .expect(200, {
           authToken: expectedToken,
         })
