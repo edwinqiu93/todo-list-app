@@ -124,6 +124,22 @@ function seedMaliciousTask(db, user, task) {
     )
 }
 
+// function cleanTables(db) {
+//   return db.transaction(trx =>
+//     trx.raw(
+//       `TRUNCATE
+//         tasks,
+//         users
+//       `
+//     )
+//     .then(() =>
+//       Promise.all([
+//         trx.raw(`ALTER SEQUENCE tasks_task_id_seq minvalue 0 START WITH 1`),
+//         trx.raw(`SELECT setval('tasks_task_id_seq', 0)`)
+//       ])
+//     )
+//   )
+// }
 function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
@@ -157,6 +173,7 @@ function seedUsers(db, users) {
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  console.log("SECRET", secret);
   const token = jwt.sign({ user_id: user.user_id }, secret, {
     subject: user.user_id,
     algorithm: 'HS256',
