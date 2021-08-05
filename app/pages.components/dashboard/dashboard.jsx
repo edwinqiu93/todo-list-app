@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
 		loaded: false, 
 		loading: false,
 		data: [],
-		payload: this.getInitialPayload()
+		payload: this.getInitialPayload(),
 	}
 
 	getInitialPayload() {
@@ -78,7 +78,7 @@ class Dashboard extends React.Component {
 	}
 
 	render(){
-		const { loading, loaded, payload } = this.state;
+		const { loading, loaded, payload, data } = this.state;
 		console.log("state", this.state);
 
 		return (
@@ -157,8 +157,45 @@ class Dashboard extends React.Component {
 						loading={loading}
 						icon="icon-list2"
                     >
-
-
+						<ul className="task-ul">
+							{
+								loaded && !loading && data.length && data.map((task, i) => {
+									if (task.completed == "N") {
+										return (
+											<div className='task-section' key={i}>
+												<div style={{ display: "flex", justifyContent: "space-between" }}>
+													<li className='task-results-list'>
+														<strong> {task.task_title}</strong> 
+													</li>
+													<div className="btn-div">
+														<i 
+															className="btn-icons icon-circle"
+															onClick={this.handleEditForm}
+															onMouseEnter={() => this.setState({ checked: true })}
+															onMouseLeave={() => this.setState({ checked: false })}
+														>
+														</i>														
+														<i onClick={this.handleDeleteForm} className="btn-icons fa fa-trash"></i>				
+													</div>
+												</div>
+												<div className={'task-info-div ' +  (!task.due_date ? 'hidden' : '') }>
+													<span className='task-details-title'>Due Date</span><i className="fa fa-caret-right"></i><span className='task-details'>{task.due_date}</span> 
+												</div>
+												<div className={'task-info-div ' +  (!task.task_description ? 'hidden' : '') }>
+													<span className='task-details-title'>
+														Description
+													</span>
+													<i className="fa fa-caret-right"></i>
+													<span className='task-details'>
+														{task.task_description}
+													</span>
+												</div>
+											</div>
+										)
+									}	
+								})
+							}
+						</ul>
 					</Panel>
 					<Panel
                         icon="icon-history"

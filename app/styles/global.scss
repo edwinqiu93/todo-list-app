@@ -373,8 +373,59 @@ input {
 	justify-content: space-between;
 }
 
+.hidden {
+    display: none;
+}
 
+.task-ul {
+    padding-inline-start : 0px;
+}
 
+.task-section {
+    padding: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #EEE;
+    margin-bottom: 0.5rem;
+}
+
+.task-results-list {
+    list-style-type: none;
+    margin-bottom: 0.2rem;
+    color: $primary;
+    font-size: 17px;
+}
+
+.task-info-div {
+    padding-left: 0.6rem;
+}
+
+.task-details-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.fa-caret-right {
+    color: $primary;
+    display: inline-block;
+    margin: 0.4rem;
+}
+
+.task-details {
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+.btn-div {
+    font-size: 18px;
+}
+
+.btn-icons {
+    margin-left: 1rem;
+}
+
+.btn-icons:hover {
+    cursor: pointer;
+}
 
 /*
 
