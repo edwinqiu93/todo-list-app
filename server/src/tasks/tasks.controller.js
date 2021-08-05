@@ -25,6 +25,43 @@ async function createTask(req, res, next) {
             .catch(next)
 }
 
+async function getAllTasks(req, res, next) {
+    let db = req.app.get('db');
+        
+    return TasksService.getAllTasks(db, req.user.user_id)
+        .then(tasks => {
+            res.json(tasks.map((task) => {
+                if (task.due_date) {
+                    task.due_date = moment.utc(task.due_date).local().format("YYYY-MM-DD hh:mm:ss A");
+                }
+
+                return TasksService.serializeTask(task);
+            }))
+        })
+        .catch(next)
+}
+
+async function deleteTask(req, res, next) {
+    let db = req.app.get('db');
+    let { task_id } = req.params;
+
+    return TasksService.getById(db, task_id)
+            .then(trip => {
+                if (!trip) {
+                    return res.status(404).send(`Please select a valid Task.`)
+                }
+                return TasksService.deleteTask(db, task_id)
+                    .then(data => {
+                        logger.info(`trip id ${task_id} was deleted.`)
+                        return res.status(204).end();
+                    })
+                    .catch(next)
+            })
+            .catch(next)
+}
+
 module.exports = {
-    createTask
+    createTask,
+    getAllTasks,
+    deleteTask
 }
