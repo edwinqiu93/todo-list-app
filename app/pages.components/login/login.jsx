@@ -18,8 +18,8 @@ class Login extends React.Component {
 
 	state = {
         payload: {
-            password: "",
-            user_id: ""
+            password: "Testing123",
+            user_id: "demo"
         },
         loading: false
     }

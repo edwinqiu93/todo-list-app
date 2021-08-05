@@ -22,15 +22,11 @@ class Dashboard extends React.Component {
 		payload: this.getInitialPayload()
 	}
 
-	componentDidMount() {
-		console.log("in dashboard mount");
-	}
-
 	getInitialPayload() {
 		return {
-			taskTitle: "",
-			taskDescription: "",
-			dueDate: "",
+			task_title: "",
+			task_description: "",
+			due_date: "",
 			completed: "N"
 		};	
 	}
@@ -43,7 +39,42 @@ class Dashboard extends React.Component {
 
 
 	componentDidMount = async () => {
+		try {
+			this.setState({ loading: true });
+			let data = await api.tasks.getAllTasks();
+			console.log("all data", data);
+			this.setState({ loaded: true, loading: false, data })
+		} catch (error) {
+            console.error(error);
+            window.alert(error.response?.data ?? error.message);
+            this.setState({ loading: false });
+        }
+	}
+
+	createTask = async () => {
+		let { task_title } = this.state.payload;
 		
+		if (!task_title) {
+			return window.alert("Please fill in a Task Title and Resubmit.");
+		}
+
+		try {
+			this.setState({ loading: true });
+			let returnedItem = await api.tasks.createTask(this.state.payload);
+			console.log("returned Item", returnedItem);
+			this.setState({ 
+				loading: false,
+				data: [
+					...this.state.data,
+					returnedItem
+				]
+			})
+		} catch (error) {
+            console.error(error);
+            window.alert(error.response?.data ?? error.message);
+            this.setState({ loading: false });
+        }
+
 	}
 
 	render(){
@@ -85,8 +116,8 @@ class Dashboard extends React.Component {
 									<input
 										className="form-control"
 										placeholder=""
-										value={payload.taskTitle}
-										onChange={event => this.handleChange("payload.taskTitle")(event.target.value)}
+										value={payload.task_title}
+										onChange={event => this.handleChange("payload.task_title")(event.target.value)}
 										required
 									/>
                             	</div>
@@ -97,8 +128,8 @@ class Dashboard extends React.Component {
 									<input
 										className="form-control"
 										type="datetime-local"
-										value={payload.dueDate}
-										onChange={event => this.handleChange("payload.dueDate")(event.target.value)}
+										value={payload.due_date}
+										onChange={event => this.handleChange("payload.due_date")(event.target.value)}
 									/>
 								</div>
 							</div>
@@ -111,8 +142,8 @@ class Dashboard extends React.Component {
 									className="form-control"
 									placeholder=""
 									rows="3"
-									value={payload.taskDescription}
-									onChange={event => this.handleChange("payload.taskDescription")(event.target.value)}
+									value={payload.task_description}
+									onChange={event => this.handleChange("payload.task_description")(event.target.value)}
 								/>
 							</div>
 						</div>

@@ -7,5 +7,6 @@ router.get("/health-check", function (req, res) {
 });
 
 router.use("/user", require("./user/user.route"));
+router.use("/tasks", require("./tasks/tasks.route"));
 
 module.exports = router;

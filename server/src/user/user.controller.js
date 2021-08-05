@@ -1,6 +1,6 @@
 "use strict";
 let UsersService = require("./user.service");
-const path = require('path');
+const path = require("path");
 
 async function registerAccount(req, res) {
     const { user } = req.body;
