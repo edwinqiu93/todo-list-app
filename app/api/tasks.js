@@ -8,6 +8,14 @@ async function createTask(payload) {
         .then(resp => resp.data)
 }
 
+async function getAllTasks() {
+    return agent
+        .get()
+        .get("/api/tasks")
+        .then(resp => resp.data)
+}
+
 module.exports = {
-    createTask
+    createTask,
+    getAllTasks
 }

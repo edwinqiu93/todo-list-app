@@ -14,6 +14,7 @@ const TasksService = {
             task_title: xss(task.task_title),
             task_description: xss(task.task_description),
             due_date: task.due_date,
+            completed: task.completed,
             user_id: task.user_id
         }
     },
