@@ -15,7 +15,15 @@ async function getAllTasks() {
         .then(resp => resp.data)
 }
 
+async function deleteTask(id) {
+    return agent
+		.get()
+		.delete(`/api/tasks/${id}`)
+		.then(resp => resp);
+}
+
 module.exports = {
     createTask,
-    getAllTasks
+    getAllTasks,
+    deleteTask
 }

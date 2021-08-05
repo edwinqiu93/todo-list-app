@@ -12,7 +12,12 @@ import ReactSelect from "components/ReactSelect";
 import moment from "moment";
 import "moment-timezone";
 
-@connect()
+
+const mapDispatchToProps = dispatch => ({
+	openDelete: (payload) => dispatch(action.modal.open("DELETETASK", payload)),
+});
+
+@connect(null, mapDispatchToProps)
 class Dashboard extends React.Component { 
 
 	state = {
@@ -161,6 +166,15 @@ class Dashboard extends React.Component {
 							{
 								loaded && !loading && data.length && data.map((task, i) => {
 									if (task.completed == "N") {
+										let deletePayload = {
+											task_id: task.task_id,
+											update: (id) => {
+												this.setState({
+													data: this.state.data.filter(task => task.task_id !== id)
+												})
+											}
+										}
+
 										return (
 											<div className='task-section' key={i}>
 												<div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -175,7 +189,13 @@ class Dashboard extends React.Component {
 															onMouseLeave={() => this.setState({ checked: false })}
 														>
 														</i>														
-														<i onClick={this.handleDeleteForm} className="btn-icons fa fa-trash"></i>				
+														<i 
+															onClick={this.handleDeleteForm} 
+															className="btn-icons fa fa-trash"
+															disabled={loading}
+															onClick={loading ? noop : () => this.props.openDelete(deletePayload)}
+														>
+														</i>				
 													</div>
 												</div>
 												<div className={'task-info-div ' +  (!task.due_date ? 'hidden' : '') }>
