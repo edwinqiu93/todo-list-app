@@ -47,7 +47,7 @@ describe("Users Endpoints", function() {
           return supertest(app)
             .post("/api/user/register")
             .send({ user: registerAttemptBody })
-            .expect(400, `Please fill in the ${field} field and resubmit.`)
+            .expect(400, `"Please fill in the ${field} field and resubmit."`)
         })
       })
 
@@ -60,7 +60,7 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userShortPassword })
-          .expect(400, `Password must be longer than 8 characters`)
+          .expect(400, '"Password must be longer than 8 characters"')
       })
 
       it(`responds 400 "Password must be less than 72 characters" when long password`, () => {
@@ -72,7 +72,7 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userLongPassword })
-          .expect(400, `Password must be less than 72 characters`)
+          .expect(400, '"Password must be less than 72 characters"')
       })
 
       it(`responds 400 error when password starts with spaces`, () => {
@@ -84,7 +84,7 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordStartsSpaces })
-          .expect(400, `Password must not start or end with empty spaces`)
+          .expect(400, '"Password must not start or end with empty spaces"')
       })
 
       it(`responds 400 error when password ends with spaces`, () => {
@@ -96,19 +96,19 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordEndsSpaces })
-          .expect(400, `Password must not start or end with empty spaces`)
+          .expect(400, '"Password must not start or end with empty spaces"')
       })
 
       it(`responds 400 error when password isn"t complex enough`, () => {
         const userPasswordNotComplex = {
           user_id: "test username",
-          password: "AAaabb",
+          password: "AAaabbccc",
          
         }
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordNotComplex })
-          .expect(400, `Password must contain one Upper case, Lower case, and Number`)
+          .expect(400, '"Password must contain one Upper case, Lower case, and Number"')
       })
 
       it(`responds 400 "User name already taken" when username isn"t unique`, () => {
@@ -120,14 +120,14 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/register")
           .send({ user: duplicateUser })
-          .expect(400, `Username already taken`)
+          .expect(400, '"Username already taken"')
       })
     })
 
     context(`Happy path`, () => {
       it(`responds 201, serialized user, storing bcryped password`, () => {
         const newUser = {
-          user_id: "test username",
+          user_id: "test_username",
           password: "11AAaa!!",
          
         }
@@ -136,7 +136,7 @@ describe("Users Endpoints", function() {
           .send({ user: newUser })
           .expect(201)
           .expect(res => {
-            expect(res.body).to.have.property("id")
+            expect(res.body).to.have.property("user_id")
             expect(res.body.user_id).to.eql(newUser.user_id)
             expect(res.body).to.not.have.property("password")
             expect(res.headers.location).to.eql(`/api/user/register/${res.body.user_id}`)
@@ -182,7 +182,7 @@ describe("Users Endpoints", function() {
         return supertest(app)
           .post("/api/user/login")
           .send({ user: loginAttemptBody })
-          .expect(400, `Missing "${field}" in request body`)
+          .expect(400, `"Please fill in the ${field} field and resubmit."`)
       })
     })
 
@@ -191,7 +191,7 @@ describe("Users Endpoints", function() {
       return supertest(app)
         .post("/api/user/login")
         .send({ user: userInvalidUser })
-        .expect(400, `Incorrect Username or password`)
+        .expect(400, '"Incorrect Username or Password"')
     })
 
     it(`responds 400 "invalid username or password" when bad password`, () => {
@@ -199,7 +199,7 @@ describe("Users Endpoints", function() {
       return supertest(app)
         .post("/api/user/login")
         .send({ user: userInvalidPass })
-        .expect(400, `Incorrect Username or password`)
+        .expect(400, '"Incorrect Username or Password"')
     })
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {

@@ -8,9 +8,9 @@ async function registerAccount(req, res, next) {
     const db = req.app.get("db");
     console.log("user", user);
 
-    for (let field in user) {
-        if (!user[field]) {
-            return res.status(400).json(`Please fill in the ${field} field and resubmit.`);
+    for (const field of ["user_id", "password"]) {
+        if (!user.hasOwnProperty(field)) {
+            return res.status(400).json(`Please fill in the ${field} field and resubmit.`)
         }
     }
 
@@ -38,7 +38,7 @@ async function registerAccount(req, res, next) {
                                 console.log("inserted user", insertedUser);
                                 res
                                     .status(201)
-                                    .location(path.posix.join(req.originalUrl, `/${insertedUser.id}`))
+                                    .location(path.posix.join(req.originalUrl, `/${insertedUser.user_id}`))
                                     .json(UsersService.serializeUser(insertedUser))
                             })
                             .catch(next)  
@@ -53,13 +53,13 @@ async function login(req, res, next) {
     const { user: { user_id, password }} = req.body;
     const db = req.app.get('db')
     const loginUser = { 
-      user_id: user_id.toLowerCase(),
+      user_id: user_id?.toLowerCase(),
       password
     }
 
-    for (let field in user) {
-        if (!user[field]) {
-            return res.status(400).json(`Please fill in the ${field} field and resubmit.`);
+    for (const field of ["user_id", "password"]) {
+        if (!user.hasOwnProperty(field)) {
+            return res.status(400).json(`Please fill in the ${field} field and resubmit.`)
         }
     }
 
