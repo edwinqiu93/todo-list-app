@@ -2,6 +2,7 @@
 const TasksService = require("./tasks.service");
 const path = require("path");
 const moment = require("moment");
+const logger = require("../../logger");
 
 async function createTask(req, res, next) {
     let { payload : { task_title, task_description, due_date, completed } } = req.body;
@@ -11,7 +12,11 @@ async function createTask(req, res, next) {
         return res.stautus(400).json("Please fill in a Task Title before submitting");
     }
 
-    let newTask = { task_title, task_description, due_date, completed, user_id: req.user.user_id };
+    console.log("payload", req.body.payload);
+
+    let newTask = { task_title, task_description, completed, user_id: req.user.user_id };
+
+    due_date ? newTask.due_date = due_date : null;
 
     return TasksService.addTask(db, newTask)
             .then(task => {
@@ -44,15 +49,17 @@ async function getAllTasks(req, res, next) {
 async function deleteTask(req, res, next) {
     let db = req.app.get('db');
     let { task_id } = req.params;
+    console.log("task id", task_id)
 
     return TasksService.getById(db, task_id)
-            .then(trip => {
-                if (!trip) {
+            .then(task => {
+                console.log("task", task);
+                if (!task) {
                     return res.status(404).send(`Please select a valid Task.`)
                 }
                 return TasksService.deleteTask(db, task_id)
                     .then(data => {
-                        logger.info(`trip id ${task_id} was deleted.`)
+                        logger.info(`task id ${task_id} was deleted.`)
                         return res.status(204).end();
                     })
                     .catch(next)

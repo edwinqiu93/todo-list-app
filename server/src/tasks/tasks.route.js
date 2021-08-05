@@ -11,7 +11,7 @@ router
     .post(auth, controller.createTask)
 
 router
-    .route("/:id")
+    .route("/:task_id")
     .delete(auth, controller.deleteTask)
 
 module.exports = router;
