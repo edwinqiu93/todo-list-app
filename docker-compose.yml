@@ -14,7 +14,7 @@ services:
       - 81:80
 
   server:
-    container_name: todo-app
+    container_name: todo-server
     build: ./server
     restart: unless-stopped
     command: npm start
