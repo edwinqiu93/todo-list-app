@@ -44,30 +44,39 @@ describe("Task Endpoints", function() {
       const payload = {
         task_title: "Test Title 001",
         task_description: "Test Description 001",
-        // due_date: new Date('2021-08-20T07:00:00.00Z'),
         due_date: moment.utc().local().format("YYYY-MM-DD hh:mm A"),
         completed: "N",
         user_id: testUser.user_id,
         test: true
       }
-      
-      let postResponse = await supertest(app)
+
+      return supertest(app)
         .post("/api/tasks")
         .set("Authorization", helpers.makeAuthHeader(testUser))
         .send({ payload })
         .expect(201)
-
-      console.log("post response", postResponse.body);
-    
-      let attributes = postResponse.body;
-      expect(postResponse.status).to.eql(201);
-      expect(attributes.task_title).to.eql(payload.task_title);
-      expect(attributes.task_description).to.eql(payload.task_description);
-      expect(attributes.due_date).to.eql(payload.due_date);
-      expect(attributes.completed).to.eql(payload.completed);
-      expect(attributes.user_id).to.eql(payload.user_id);
-      expect(postResponse.headers.location).to.eql(`/api/tasks/${attributes.task_id}`)
-        
+        .expect(res => {
+          expect(res.status).to.eql(201);
+          expect(row.task_title).to.eql(payload.task_title)
+          expect(res.body.task_description).to.eql(payload.task_description)
+          expect(res.body.due_date).to.eql(payload.due_date)
+          expect(res.body.completed).to.eql(payload.completed)
+          expect(res.body.user_id).to.eql(payload.user_id)
+          expect(res.headers.location).to.eql(`/api/tasks/${attributes.task_id}`)
+        })
+        .expect(res =>
+          db
+            .from('tasks')
+            .select('*')
+            .where({ task_id: res.body.task_id })
+            .first()
+            .then(row => {
+              expect(row.task_title).to.eql(payload.task_title)
+              expect(row.task_description).to.eql(payload.task_description)
+              expect(row.due_date).to.eql(payload.due_date)
+              expect(row.completed).to.eql(payload.completed)
+            })
+        )
     })
 
     const requiredFields = ["task_title"];
@@ -93,4 +102,65 @@ describe("Task Endpoints", function() {
       })
     })
   })
+
+
+  describe(`GET /api/tasks`, () => {
+
+    context(`No Tasks Inserted into Database`, () => {
+      it(`responds with 200 and an empty list`, () => {
+        return supertest(app)
+          .get('/api/tasks')
+          .expect(200, [])
+      })
+    })
+
+    context('When Tasks are Inserted into Database', () => {
+        beforeEach('insert tasks', () => {
+          return db
+              .from('tasks')
+              .insert(testTasks)
+        })
+
+      it('responds with 200 and all of the tasks', () => {
+        const expectedTasks = testTasks.map(task =>
+          helpers.makeExpectedTask(
+            task,
+            testUsers
+          )
+        )
+        return supertest(app)
+          .get('/api/tasks')
+          .expect(200, expectedTasks)
+      })
+    })
+
+    context(`When a XSS attack occurs`, () => {
+      const testUser = testUsers[0];
+      const {
+        maliciousTask,
+        expectedTask
+      } = helpers.makeMaliciousTask(testUser)
+
+      beforeEach('insert malicious thing', () => {
+        return helpers.seedMaliciousTask(
+          db,
+          testUser,
+          maliciousTask,
+        )
+      })
+
+      it('removes XSS attack content', () => {
+        return supertest(app)
+          .get(`/api/tasks`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body[0].task_title).to.eql(expectedTask.task_title)
+            expect(res.body[0].task_description).to.eql(expectedTask.task_description)
+          })
+      })
+    })
+  })
+
+  //delete tests
+
 })

@@ -23,7 +23,6 @@ async function createTask(req, res, next) {
     console.log("new Task", newTask);
 
     if (!newTask["task_title"]) {
-        // console.log("hello");
         return res.status(400).json(`Please fill in the task_title field and resubmit`);
     }
 
