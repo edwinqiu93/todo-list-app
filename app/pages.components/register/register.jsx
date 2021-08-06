@@ -9,6 +9,8 @@ import { action } from "modules";
 import css from "./register.module.scss";
 import Link from "next/link";
 import classnames from "classnames";
+import IdleService from "../../services/idle-service";
+import TokenService from "../../services/token-service";
 // import { withRouter } from "next/router";
 
 @connect()
@@ -49,10 +51,16 @@ class Register extends React.Component {
 
         try {
             this.setState({ loading: true });
-            let data = await api.user.registerAccount(newUser);
-            console.log("data", data);
-            this.setState({ loading: false });
-            return Router.push("/dashboard");
+            let respJson = await api.user.registerAccount(newUser);
+            if (respJson) {
+				TokenService.saveAuthToken(respJson.authToken);
+				IdleService.registerIdleTimerResets();
+				TokenService.queueCallbackBeforeExpiry(async () => {
+				  await api.user.postRefreshToken();
+				})
+				this.setState({ loading: false });
+				return Router.push("/dashboard");
+			}
         } catch (error) {
             console.error(error);
 			window.alert(error.response?.data ?? error.message);

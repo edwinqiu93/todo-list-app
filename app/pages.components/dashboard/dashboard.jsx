@@ -117,7 +117,8 @@ class Dashboard extends React.Component {
                                 icon="fa fa-trash"
                                 title="Clear"
                                 onClick={() => this.setState({ payload: this.getInitialPayload() })}
-                                disabled={loading}
+								disabled={loading}
+								size="sm"
                             />
                             <Button
                                 type="success"
@@ -125,7 +126,8 @@ class Dashboard extends React.Component {
                                 className="margin-left-12"
                                 title="Create Task"
                                 onClick={this.createTask}
-                                disabled={loading}
+								disabled={loading}
+								size="sm"
                             />
                         </div>
                     }
@@ -162,7 +164,7 @@ class Dashboard extends React.Component {
 								<textarea
 									className="form-control"
 									placeholder=""
-									rows="3"
+									rows="2"
 									value={payload.task_description}
 									onChange={event => this.handleChange("payload.task_description")(event.target.value)}
 								/>
@@ -180,7 +182,7 @@ class Dashboard extends React.Component {
                     >
 						<ul className="task-ul">
 							{
-								loaded && !loading && data.length && data.map((task, i) => {
+								loaded && !loading && !!data.length && data.map((task, i) => {
 									if (task.completed == "N") {
 										let deletePayload = {
 											task_id: task.task_id,
@@ -242,7 +244,7 @@ class Dashboard extends React.Component {
                     >
 						<ul className="task-ul">
 							{
-								loaded && !loading && data.length && data.map((task, i) => {
+								loaded && !loading && !!data.length && data.map((task, i) => {
 									if (task.completed == "Y") {
 										return (
 											<div className='task-section' key={i}>
@@ -251,7 +253,7 @@ class Dashboard extends React.Component {
 														<strong> {task.task_title}</strong> 
 													</li>
 													<div className="btn-div">
-														<i className="btn-icons icon-checkmark-circle"></i>														
+														<i className="icon-checkmark-circle"></i>														
 													</div>
 												</div>
 												<div className={'task-info-div ' +  (!task.due_date ? 'hidden' : '') }>

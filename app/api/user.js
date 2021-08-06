@@ -28,7 +28,6 @@ async function postRefreshToken() {
     })
     
     return respJson;
-
 }
 
 module.exports = {

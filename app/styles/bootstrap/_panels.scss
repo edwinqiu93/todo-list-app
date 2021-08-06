@@ -27,7 +27,7 @@
 
 // Panel contents
 .panel-body {
-	padding: $panel-body-padding;
+	padding: 0px 20px 13px;
 	transition: height 0.5s ease-out;
 	transition: opacity 1s ease-out;
 	@include clearfix;
@@ -35,8 +35,8 @@
 
 // Optional heading
 .panel-heading {
-	font-size: 17px;
-	padding: $panel-heading-padding;
+	font-size: 16px;
+	padding: 16px;
 	border-bottom: 1px solid transparent;
 
 	@include border-top-radius(($panel-border-radius - 1));
@@ -67,7 +67,7 @@
 
 // Optional footer (stays gray in every modifier class)
 .panel-footer {
-	padding: $panel-footer-padding;
+	padding: 7px 10px;
 	border-top: 1px solid $panel-inner-border;
 	background-color: $panel-footer-bg;
 
