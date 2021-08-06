@@ -1,8 +1,10 @@
+# TODO List Project
+
 ## Demo
 
 - Live Preview can be found at : https://quizzical-wozniak-ce172a.netlify.app/
 
-### Setting Up Development 
+## Setting Up Development 
 
 - App
 
@@ -21,7 +23,7 @@ npm install
 npm run dev
 ```
 
-### Creating Development Migrations and Seeding 
+## Creating Development Migrations and Seeding 
 
 - Create User: `createuser testuser --interactive`
 - Create DB: `createdb -U testuser todo-list-db`
@@ -29,7 +31,7 @@ npm run dev
 - Seed Sample Data : `psql -U testuser -d todo-list-db -f ./seed/seed.users-table.sql` , `psql -U testuser -d todo-list-db -f ./seed/seed.tasks-table.sql`
 - Repeat the above steps for a Test Database (todo-list-db-test)
 
-### Build / Deploy Steps
+## Build / Deploy Steps
 
 - Deploying the Server
 
