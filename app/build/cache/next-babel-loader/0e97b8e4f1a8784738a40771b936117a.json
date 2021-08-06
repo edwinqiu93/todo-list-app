@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nvar _process$env$DOMAIN;\n\nmodule.exports = {\n  title: \"TODO List App\",\n  description: \"TODO List App\",\n  keywords: \"todo, list\",\n  canonical: (_process$env$DOMAIN = process.env.DOMAIN) !== null && _process$env$DOMAIN !== void 0 ? _process$env$DOMAIN : \"http://localhost:3100\"\n};","map":null,"metadata":{},"sourceType":"script"}

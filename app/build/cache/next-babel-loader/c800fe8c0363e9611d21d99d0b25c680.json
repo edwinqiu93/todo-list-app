@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nexport function open(images, index = 0) {\n  return {\n    type: \"OPEN_REACT_IMAGES\",\n    payload: {\n      images,\n      index\n    }\n  };\n}\nexport function close() {\n  return {\n    type: \"CLOSE_REACT_IMAGES\"\n  };\n}","map":null,"metadata":{},"sourceType":"module"}

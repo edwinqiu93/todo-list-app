@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nexport function open(tag, payload = {}) {\n  return {\n    type: \"OPEN_MODAL\",\n    payload: {\n      tag,\n      payload\n    }\n  };\n}\nexport function close() {\n  return {\n    type: \"CLOSE_MODAL\"\n  };\n}","map":null,"metadata":{},"sourceType":"module"}

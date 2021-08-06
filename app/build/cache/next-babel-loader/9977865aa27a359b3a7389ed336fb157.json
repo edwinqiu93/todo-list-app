@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nfunction isComponentType(type) {\n  if (!type) return false;\n  return [\"default\", \"primary\", \"success\", \"info\", \"warning\", \"danger\"].includes(type);\n}\n\nmodule.exports = isComponentType;","map":null,"metadata":{},"sourceType":"script"}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Register from \"../pages.components/register\";\nexport default Register;","map":null,"metadata":{},"sourceType":"module"}

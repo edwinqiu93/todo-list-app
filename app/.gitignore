@@ -44,5 +44,4 @@ test.js
 
 .serverless_nextjs
 .serverless
-build
 sls-next-build

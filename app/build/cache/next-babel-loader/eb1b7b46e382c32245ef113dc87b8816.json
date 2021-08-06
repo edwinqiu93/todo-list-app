@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nfunction classnames(...array) {\n  return array.filter(item => item != null && item.toString).filter(item => item !== false).map(item => item.toString()).join(\" \");\n}\n\nmodule.exports = classnames;","map":null,"metadata":{},"sourceType":"script"}

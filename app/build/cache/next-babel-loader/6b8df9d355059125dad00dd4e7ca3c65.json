@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nexport function open() {\n  var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n  return {\n    type: \"OPEN_SIDEBAR\",\n    payload: payload\n  };\n}\nexport function close() {\n  return {\n    type: \"CLOSE_SIDEBAR\"\n  };\n}","map":null,"metadata":{},"sourceType":"module"}

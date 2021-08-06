@@ -1,0 +1,1 @@
+{"ast":null,"code":"\"use strict\";\n\nfunction createReducer(initState = {}, actionHandler) {\n  return function (state = initState, action) {\n    if (actionHandler.hasOwnProperty(action.type)) return actionHandler[action.type](state, action);\n    return state;\n  };\n}\n\nmodule.exports = createReducer;","map":null,"metadata":{},"sourceType":"script"}
