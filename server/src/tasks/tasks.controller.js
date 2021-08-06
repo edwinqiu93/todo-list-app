@@ -89,6 +89,10 @@ async function updateTask(req, res, next) {
     return TasksService.updateTask(db, task_id, updatedTask)
             .then(task => {
                 // console.log("returned updated task", task);
+                if (!task) {
+                    return res.status(404).json(`That Task does not exist.`);
+                }
+
                 if (task.due_date) {
                     task.due_date = moment.utc(task.due_date).local().format("YYYY-MM-DD hh:mm A");
                 }
