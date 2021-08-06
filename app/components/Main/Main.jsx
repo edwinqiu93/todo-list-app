@@ -262,7 +262,6 @@ class Main extends React.Component {
 
 		const { loaded } = this.state;
 		const pathname = this.props.router.pathname;
-		// console.log("PROPS", this.props);
 
 		if (ignorePaths.includes(pathname))
 			return (

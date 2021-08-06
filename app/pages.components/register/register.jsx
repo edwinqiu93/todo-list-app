@@ -1,7 +1,6 @@
 import React from "react";
 import objectPath from "object-path";
 import { connect } from "react-redux";
-import { autobind } from "react-decoration";
 import * as api from "api";
 import Button from "components/Button";
 import Router from "next/router";
@@ -11,7 +10,6 @@ import Link from "next/link";
 import classnames from "classnames";
 import IdleService from "../../services/idle-service";
 import TokenService from "../../services/token-service";
-// import { withRouter } from "next/router";
 
 @connect()
 class Register extends React.Component {
@@ -70,7 +68,6 @@ class Register extends React.Component {
 
 	render() {
         const { loading, payload } = this.state
-        // console.log("state", this.state);
 		return (
             <>
                 <div className={classnames(css.bg)} />
@@ -94,7 +91,6 @@ class Register extends React.Component {
                                             <input 
                                                 id="user_id" 
                                                 name="user_id" 
-                                                // type="text" 
                                                 value={payload.user_id} 
                                                 onChange={event => this.handleChange("payload.user_id")(event.target.value)}
                                             />

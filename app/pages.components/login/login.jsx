@@ -1,15 +1,12 @@
 import React from "react";
 import objectPath from "object-path";
 import { connect } from "react-redux";
-import { autobind } from "react-decoration";
 import * as api from "api";
 import Button from "components/Button";
 import Router from "next/router";
-import { action } from "modules";
 import css from "./login.module.scss";
 import Link from "next/link";
 import classnames from "classnames";
-// import { withRouter } from "next/router";
 import IdleService from "../../services/idle-service";
 import TokenService from "../../services/token-service";
 
@@ -66,7 +63,6 @@ class Login extends React.Component {
 
 	render() {
 		const { payload, loading } = this.state;
-		// console.log("state", this.state);
 		return (
 			<>
 				<div className={classnames(css.bg)} />
@@ -80,11 +76,10 @@ class Login extends React.Component {
 									<label htmlFor="user_id">
 										User ID    
 									</label>
-									<div className='signup-input'>
+									<div className="signup-input">
 										<input 
 											id="user_id" 
 											name="user_id" 
-											// type="text" 
 											value={payload.user_id} 
 											onChange={event => this.handleChange("payload.user_id")(event.target.value)}
 											required
@@ -97,7 +92,7 @@ class Login extends React.Component {
 									<label htmlFor="password">
 										Password    
 									</label>
-									<div className='signup-input'>
+									<div className="signup-input">
 										<input 
 											id="password" 
 											name="password" 

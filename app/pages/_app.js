@@ -40,10 +40,10 @@ class App extends NextApp {
 	componentDidMount() {
 		IdleService.setIdleCallback(this.logoutFromIdle);
 		if (TokenService.hasAuthToken()) {
-		  IdleService.registerIdleTimerResets();
-		  TokenService.queueCallbackBeforeExpiry(async () => {
-			await api.user.postRefreshToken;
-		})
+			IdleService.registerIdleTimerResets();
+			TokenService.queueCallbackBeforeExpiry(async () => {
+				await api.user.postRefreshToken;
+		  	})
 		} 
 	}
 	
@@ -61,7 +61,6 @@ class App extends NextApp {
 
 	render() {
 		const { Component, pageProps, store } = this.props;
-		// console.log("Component", Component);
 		return (
 			<>
 				<Head>

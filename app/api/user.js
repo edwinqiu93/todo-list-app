@@ -1,6 +1,5 @@
 const agent = require("./agent");
 import TokenService from "../services/token-service";
-import IdleService from "../services/idle-service";
 
 async function registerAccount(user) {
     return agent

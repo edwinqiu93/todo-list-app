@@ -1,7 +1,6 @@
 import React from "react";
 import * as api from "api";
 import objectPath from "object-path";
-import { autobind } from "react-decoration";
 import Modal from "components/Modal/Alert";
 
 class DeleteTask extends React.Component {
@@ -33,11 +32,10 @@ class DeleteTask extends React.Component {
     }
     
     close = async () => {
-        return this.props.close()
+        return this.props.close();
     }
 
 	render() {
-        console.log("propss", this.props)
 		return (
 			<Modal
 				size="sm"
