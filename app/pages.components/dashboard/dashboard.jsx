@@ -47,7 +47,6 @@ class Dashboard extends React.Component {
 		try {
 			this.setState({ loading: true });
 			let data = await api.tasks.getAllTasks();
-			console.log("all data", data);
 			this.setState({ loaded: true, loading: false, data })
 		} catch (error) {
             console.error(error);
@@ -66,7 +65,6 @@ class Dashboard extends React.Component {
 		try {
 			this.setState({ loading: true });
 			let returnedItem = await api.tasks.createTask(this.state.payload);
-			console.log("returned Item", returnedItem);
 			this.setState({ 
 				loading: false,
 				data: [
@@ -85,7 +83,6 @@ class Dashboard extends React.Component {
 		try {
 			this.setState({ loading: true });
 			let returnedItem = await api.tasks.updateTask(id);
-			console.log("returned Item", returnedItem);
 			this.setState({ 
 				loading: false,
 				data: this.state.data.map(task => (task.task_id == returnedItem.task_id) ? returnedItem : task)
@@ -100,7 +97,7 @@ class Dashboard extends React.Component {
 
 	render(){
 		const { loading, loaded, payload, data } = this.state;
-		console.log("state", this.state);
+		// console.log("state", this.state);
 
 		return (
 			<div className="container-fluid" id="dashboard_top" style={{ paddingBottom: "2rem", maxWidth: "1300px" }}>
@@ -203,8 +200,6 @@ class Dashboard extends React.Component {
 														<i 
 															className="btn-icons icon-circle"
 															onClick={() => this.updateComplete(task.task_id)}
-															onMouseEnter={() => this.setState({ checked: true })}
-															onMouseLeave={() => this.setState({ checked: false })}
 														>
 														</i>														
 														<i 

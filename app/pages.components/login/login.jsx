@@ -18,8 +18,8 @@ class Login extends React.Component {
 
 	state = {
         payload: {
-            password: "Testing123",
-            user_id: "demo"
+            password: "",
+            user_id: ""
         },
         loading: false
     }
@@ -66,7 +66,7 @@ class Login extends React.Component {
 
 	render() {
 		const { payload, loading } = this.state;
-		console.log("state", this.state);
+		// console.log("state", this.state);
 		return (
 			<>
 				<div className={classnames(css.bg)} />
@@ -74,54 +74,52 @@ class Login extends React.Component {
 				<div className={classnames(css.container)}>
 					<div className={classnames(css["left-portal"])}>
 						<h2>Login</h2>
-						<form className="LoginForm" onSubmit={this.handleSubmit}>
-							<div className="LoginForm__signupElement">
-								<div className="LoginForm__signupLabel">
+						<form className="login-form" onSubmit={this.handleSubmit}>
+							<div className="signup-element">
+								<div className="signup-label">
 									<label htmlFor="user_id">
 										User ID    
 									</label>
-									<span className="astrik">
-										*
-									</span>
-									<input 
-										id="user_id" 
-										name="user_id" 
-										// type="text" 
-										value={payload.user_id} 
-										onChange={event => this.handleChange("payload.user_id")(event.target.value)}
-										required
-										placeholder="demo"
-                                    />
+									<div className='signup-input'>
+										<input 
+											id="user_id" 
+											name="user_id" 
+											// type="text" 
+											value={payload.user_id} 
+											onChange={event => this.handleChange("payload.user_id")(event.target.value)}
+											required
+										/>
+									</div>
 								</div> 
 							</div>
-							<div className="LoginForm__signupElement">
-								<div className="LoginForm__signupLabel">
+							<div className="signup-element">
+								<div className="signup-label">
 									<label htmlFor="password">
 										Password    
 									</label>
-									<span className="astrik">*</span>
-									<input 
-										id="password" 
-										name="password" 
-										type="password" 
-										value={payload.password} 
-										onChange={event => this.handleChange("payload.password")(event.target.value)}
-										required
-										placeholder="Testing123"
-									/>
+									<div className='signup-input'>
+										<input 
+											id="password" 
+											name="password" 
+											type="password" 
+											value={payload.password} 
+											onChange={event => this.handleChange("payload.password")(event.target.value)}
+											required
+										/>
+									</div>	
 								</div>
 							</div>
 							<div className="signin-button">
-								<button className="btn btn_signIn" type="submit">
+								<button className="btn btn-login" type="submit">
 									Sign In 
 								</button>
 							</div>
-							<div className="LoginForm__loginDemo">
+							<div className="login-demo">
 								<h4>Demo Account</h4>
 								<p>User ID: demo</p>
 								<p>Password: Testing123</p>
 							</div>
-							<div className="LoginForm__redirect">
+							<div className="login-form-redirect">
 								<Link href="/register"><a>Don"t have an account? Create one.</a></Link>
 							</div>
 						</form>

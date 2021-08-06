@@ -53,6 +53,11 @@ input {
 	justify-content: center;
 }
 
+.astrik {
+    color: #ed5868;
+    margin: 0 0 0 3px;
+}
+
 //== ReactModal
 //
 //##
@@ -430,6 +435,68 @@ input {
 .line-through {
     text-decoration: line-through;
 }
+
+.login-form {
+    width: 100%;
+    max-width: 330px;
+    padding: 1.3rem;
+    padding-bottom: 0rem;
+    margin: 0 auto;
+}
+
+.signup-label {
+    width: 65%;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 0.3rem;
+}
+
+.signup-input > input {
+    width: 100%;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+}
+
+.signup-element {
+    margin-bottom: 1rem;
+}
+
+.login-form-redirect {
+    margin-top: 1rem;
+}
+
+.login-form-redirect a {
+    color: $success;
+    font-weight: 700;
+}
+
+.login-demo {
+    margin-top: 2.5rem;
+}
+
+.login-demo p  {
+    margin: 0;
+    font-size: 1rem !important;
+}
+
+.login-demo h4 {
+    margin-bottom: 0.4rem;
+    font-size: 1.2rem
+}
+
+.signup-demo p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: red;
+}
+
+.btn-login {
+	background-color: $primary;
+    width: 65%;
+    margin: 1.6rem auto;
+}
+
+
 
 /*
 

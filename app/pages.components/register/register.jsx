@@ -70,7 +70,7 @@ class Register extends React.Component {
 
 	render() {
         const { loading, payload } = this.state
-        console.log("state", this.state);
+        // console.log("state", this.state);
 		return (
             <>
                 <div className={classnames(css.bg)} />
@@ -81,69 +81,69 @@ class Register extends React.Component {
                             <h2>
                                 Create an Account
                             </h2>
-                            <form className="LoginForm" onSubmit={this.handleSubmit}>
-                                <div className="LoginForm__signupElement">
-                                    <div className="LoginForm__signupLabel">
+                            <form className="login-form" onSubmit={this.handleSubmit}>
+                                <div className="signup-element">
+                                    <div className="signup-label">
                                         <label htmlFor="user_id">
                                             User ID    
                                         </label>
                                         <span className="astrik">
                                             *
                                         </span>
-                                    </div>
-                                    <div className="LoginForm__signupLabel">
-                                        <input 
-                                            id="user_id" 
-                                            name="user_id" 
-                                            // type="text" 
-                                            value={payload.user_id} 
-                                            onChange={event => this.handleChange("payload.user_id")(event.target.value)}
-                                        />
+                                        <div className="signup-input">
+                                            <input 
+                                                id="user_id" 
+                                                name="user_id" 
+                                                // type="text" 
+                                                value={payload.user_id} 
+                                                onChange={event => this.handleChange("payload.user_id")(event.target.value)}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="LoginForm__signupElement">
-                                    <div className="LoginForm__signupLabel"> 
+                                <div className="signup-element">
+                                    <div className="signup-label"> 
                                         <label htmlFor="password">
                                             Password    
                                         </label>
                                         <span className="astrik">*</span>
-                                    </div>
-                                    <div className="LoginForm__signupLabel">
-                                        <input 
-                                            id="password" 
-                                            name="password" 
-                                            type="password" 
-                                            value={payload.password} 
-                                            onChange={event => this.handleChange("payload.password")(event.target.value)}
-                                        />
+                                        <div className="signup-input">
+                                            <input 
+                                                id="password" 
+                                                name="password" 
+                                                type="password" 
+                                                value={payload.password} 
+                                                onChange={event => this.handleChange("payload.password")(event.target.value)}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="LoginForm__signupElement">
-                                    <div className="LoginForm__signupLabel">
+                                <div className="signup-element">
+                                    <div className="signup-label">
                                         <label htmlFor="confirmPassword">
                                             Confirm Password    
                                         </label>
                                         <span className="astrik">*</span>
-                                    </div>
-                                    <div className="LoginForm__signupLabel">
-                                        <input 
-                                            id="confirmPassword" 
-                                            name="confirmPassword" 
-                                            type="password" 
-                                            value={payload.confirmPassword} 
-                                            onChange={event => this.handleChange("payload.confirmPassword")(event.target.value)}
-                                        />
+                                        <div className="signup-input">
+                                            <input 
+                                                id="confirmPassword" 
+                                                name="confirmPassword" 
+                                                type="password" 
+                                                value={payload.confirmPassword} 
+                                                onChange={event => this.handleChange("payload.confirmPassword")(event.target.value)}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="signin-button">
-                                    <button className="btn btn_signIn" type="submit" disabled={loading}> 
+                                    <button className="btn btn-login" type="submit" disabled={loading}> 
                                         Create Account
                                     </button>
                                 </div>
-                                <div className="LoginForm__signupDemo">
+                                <div className="login-demo">
                                     <p>Password must be longer than 8 characters and contain one upper case, lower case, and number.</p>
                                 </div>
-                                <div className="LoginForm__redirect">
+                                <div className="login-form-redirect">
                                     <Link href="/"><a>Already Have an Account?</a></Link>
                                 </div>
                             </form>
