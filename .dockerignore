@@ -1,0 +1,13 @@
+.git
+scripts
+node_modules
+lambda
+lambda.image
+.sql
+.doc
+.vscode
+.editorconfig
+.gitignore
+.gitmodules
+makefile
+README.md

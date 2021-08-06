@@ -1,0 +1,65 @@
+version: "2"
+
+services:
+
+  todo-nginx:
+    image: nginx:latest
+    depends_on:
+      - todo-server
+      - todo-app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 81:80
+
+  server:
+    container_name: todo-app
+    build: ./server
+    restart: unless-stopped
+    command: npm start
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k" # 200kb
+        max-file: "2"
+    environment:
+      - NODE_ENV=production
+      - PORT=3100
+      - TZ=UTC
+      - PROD_MIGRATIONS_DB_HOST=ec2-34-233-192-238.compute-1.amazonaws.com
+      - PROD_MIGRATIONS_DB_PORT=5432
+      - PROD_MIGRATIONS_DB_USER=djpxtfbwszjlzk
+      - PROD_MIGRATIONS_DB_NAME=d14llum6h9151t
+      - PROD_MIGRATIONS_DB_PASS=a043b01333d1d081948f40b5ae758f2f735368688c407f06c3bf4d7b93ae3827
+      - MIGRATIONS_DB_HOST=localhost
+      - MIGRATIONS_DB_PORT=5432
+      - MIGRATIONS_DB_NAME=todo-list-db
+      - MIGRATIONS_DB_USER=test-user
+      - DB_URL=postgresql://test-user@localhost/todo-list-db
+      - TEST_DB_URL=postgresql://test-user@localhost/todo-list-db-test
+      - JWT_SECRET=my-own-special-jwt-secret
+      - JWT_EXPIRY='5m'
+
+  app:
+    container_name: todo-app
+    build: ./app
+    restart: unless-stopped
+    command: npm start
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k" # 200kb
+        max-file: "2"
+    ulimits:
+      core: 1024
+    depends_on:
+      - todo-server
+    environment:
+      - TZ=UTC
+      - NODE_ENV=production
+      - PORT=3000
+
+networks:
+  default:
+    external:
+      name: nginx

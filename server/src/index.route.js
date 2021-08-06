@@ -6,6 +6,10 @@ router.get("/health-check", function (req, res) {
 	return res.send("OK");
 });
 
+router.get("/", (req, res) => {
+    res.send('Hello world!')
+})
+
 router.use("/user", require("./user/user.route"));
 router.use("/tasks", require("./tasks/tasks.route"));
 
