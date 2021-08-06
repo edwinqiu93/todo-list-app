@@ -57,12 +57,12 @@ describe("Task Endpoints", function() {
         .expect(201)
         .expect(res => {
           expect(res.status).to.eql(201);
-          expect(row.task_title).to.eql(payload.task_title)
+          expect(res.body.task_title).to.eql(payload.task_title)
           expect(res.body.task_description).to.eql(payload.task_description)
           expect(res.body.due_date).to.eql(payload.due_date)
           expect(res.body.completed).to.eql(payload.completed)
           expect(res.body.user_id).to.eql(payload.user_id)
-          expect(res.headers.location).to.eql(`/api/tasks/${attributes.task_id}`)
+          expect(res.headers.location).to.eql(`/api/tasks/${res.body.task_id}`)
         })
         .expect(res =>
           db
@@ -105,11 +105,19 @@ describe("Task Endpoints", function() {
 
 
   describe(`GET /api/tasks`, () => {
+    beforeEach('insert users', () => {
+        return db
+            .from('users')
+            .insert(testUsers)
+    })
+
+    const testUser = testUsers[0];
 
     context(`No Tasks Inserted into Database`, () => {
       it(`responds with 200 and an empty list`, () => {
         return supertest(app)
           .get('/api/tasks')
+          .set("Authorization", helpers.makeAuthHeader(testUser))
           .expect(200, [])
       })
     })
@@ -118,40 +126,41 @@ describe("Task Endpoints", function() {
         beforeEach('insert tasks', () => {
           return db
               .from('tasks')
-              .insert(testTasks)
+              .insert(testTasks[0])
         })
 
-      it('responds with 200 and all of the tasks', () => {
-        const expectedTasks = testTasks.map(task =>
+      it('responds with 200 and all of the tasks', async () => {
+        const expectedTasks = testTasks.filter(task => task.user_id == testUser.user_id).map(task =>
           helpers.makeExpectedTask(
             task,
-            testUsers
+            [testUser]
           )
         )
+
+        console.log("EXPECTEDDDDD", expectedTasks);
         return supertest(app)
           .get('/api/tasks')
+          .set("Authorization", helpers.makeAuthHeader(testUser))
           .expect(200, expectedTasks)
       })
     })
 
     context(`When a XSS attack occurs`, () => {
-      const testUser = testUsers[0];
       const {
         maliciousTask,
         expectedTask
       } = helpers.makeMaliciousTask(testUser)
 
       beforeEach('insert malicious thing', () => {
-        return helpers.seedMaliciousTask(
-          db,
-          testUser,
-          maliciousTask,
-        )
+        return db
+            .from('tasks')
+            .insert(maliciousTask)
       })
 
       it('removes XSS attack content', () => {
         return supertest(app)
           .get(`/api/tasks`)
+          .set("Authorization", helpers.makeAuthHeader(testUser))
           .expect(200)
           .expect(res => {
             expect(res.body[0].task_title).to.eql(expectedTask.task_title)

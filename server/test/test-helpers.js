@@ -1,5 +1,6 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const moment = require("moment");
 
 function makeArticlesFixtures() {
     const testUsers = makeUsersArray();
@@ -29,7 +30,7 @@ function makeUsersArray() {
       password: 'password-4',
     },
     {
-      user_id: 'test-user--5',
+      user_id: 'test-user-5',
       password: 'password-5',
     }
   ]
@@ -41,7 +42,7 @@ function makeTasksArray(users) {
       task_id: 1,
       task_title: 'First task title',
       task_description: 'First task script',
-      due_date:  new Date('2022-01-22T07:00:00.00Z'),
+      due_date: moment.utc('2022-01-22T07:00:00.00Z').local().format("YYYY-MM-DD hh:mm A"),
       completed: 'N',
       user_id: users[0].user_id
     },
@@ -49,7 +50,7 @@ function makeTasksArray(users) {
       task_id: 2,
       task_title: 'Second task title',
       task_description: 'Second task script',
-      due_date:  new Date('2022-02-22T07:00:00.00Z'),
+      due_date: moment.utc('2022-02-22T07:00:00.00Z').local().format("YYYY-MM-DD hh:mm A"),
       completed: 'N',
       user_id: users[1].user_id
     },
@@ -57,7 +58,7 @@ function makeTasksArray(users) {
       task_id: 3,
       task_title: 'Third task title',
       task_description: 'Third task script',
-      due_date:  new Date('2022-03-22T07:00:00.00Z'),
+      due_date: moment.utc('2022-03-22T07:00:00.00Z').local().format("YYYY-MM-DD hh:mm A"),
       completed: 'N',
       user_id: users[2].user_id
     },
@@ -65,7 +66,7 @@ function makeTasksArray(users) {
       task_id: 4,
       task_title: 'Fourth task title',
       task_description: 'Fourth task script',
-      due_date:  new Date('2022-04-22T07:00:00.00Z'),
+      due_date: moment.utc('2022-04-22T07:00:00.00Z').local().format("YYYY-MM-DD hh:mm A"),
       completed: 'Y',
       user_id: users[3].user_id
     },
@@ -73,7 +74,7 @@ function makeTasksArray(users) {
       task_id: 5,
       task_title: 'Fifth task title',
       task_description: 'Fifth task script',
-      due_date:  new Date('2022-05-22T07:00:00.00Z'),
+      due_date: moment.utc('2022-05-22T07:00:00.00Z').local().format("YYYY-MM-DD hh:mm A"),
       completed: 'Y',
       user_id: users[4].user_id
     }  
@@ -105,8 +106,8 @@ function makeMaliciousTask(user) {
   }
   const expectedTask = {
     ...makeExpectedTask(maliciousTask, [user]),
-    task_title: 'Naughty naughty very naughty <script>alert("xss");</script>',
-    task_description: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
+    task_title: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    task_description: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
   }
   return {
     maliciousTask,

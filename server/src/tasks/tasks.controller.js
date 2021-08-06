@@ -40,6 +40,8 @@ async function createTask(req, res, next) {
 
 async function getAllTasks(req, res, next) {
     let db = req.app.get('db');
+
+    console.log("USER", req.user.user_id);
         
     return TasksService.getAllTasks(db, req.user.user_id)
         .then(tasks => {
