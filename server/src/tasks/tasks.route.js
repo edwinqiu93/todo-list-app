@@ -1,18 +1,18 @@
 "use strict";
 const validate = require("express-joi-verifier");
 const PromiseRouter = require("express-promise-router");
-const auth = require("../utils/auth");
+const requireAuth = require("../utils/auth");
 const controller = require("./tasks.controller.js");
 const router = PromiseRouter();
 
 router
     .route("/")
-    .get(auth, controller.getAllTasks)
-    .post(auth, controller.createTask)
+    .get(requireAuth, controller.getAllTasks)
+    .post(requireAuth, controller.createTask)
 
 router
     .route("/:task_id")
-    .delete(auth, controller.deleteTask)
-    .patch(auth, controller.updateTask)
+    .delete(requireAuth, controller.deleteTask)
+    .patch(requireAuth, controller.updateTask)
 
 module.exports = router;

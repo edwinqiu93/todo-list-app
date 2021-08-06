@@ -1,7 +1,7 @@
 "use strict";
 const validate = require("express-joi-verifier");
 const PromiseRouter = require("express-promise-router");
-const auth = require("../utils/auth");
+const requireAuth = require("../utils/auth");
 const controller = require("./user.controller.js");
 const router = PromiseRouter();
 
@@ -15,6 +15,6 @@ router
 
 router
     .route("/refresh")
-    .post(auth, controller.refreshToken)
+    .post(requireAuth, controller.refreshToken)
 
 module.exports = router;

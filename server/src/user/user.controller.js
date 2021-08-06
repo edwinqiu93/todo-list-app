@@ -36,10 +36,19 @@ async function registerAccount(req, res, next) {
                         return UsersService.insertUser(newUser, db)
                             .then(insertedUser => {
                                 console.log("inserted user", insertedUser);
-                                res
-                                    .status(201)
-                                    .location(path.posix.join(req.originalUrl, `/${insertedUser.user_id}`))
-                                    .json(UsersService.serializeUser(insertedUser))
+
+                                if (!insertedUser) {
+                                    return res.status(400).json(`User was not created. Please try again`);
+                                }
+
+                                const sub = insertedUser.user_id
+                                const payload = { user_id: insertedUser.user_id }
+                                console.log("payload", payload);
+
+                                res.send({
+                                    authToken: UsersService.createJwt(sub, payload)
+                                })
+
                             })
                             .catch(next)  
                     })

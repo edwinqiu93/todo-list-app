@@ -119,20 +119,27 @@ describe("Users Endpoints", function() {
     })
 
     context(`Happy path`, () => {
-      it(`responds 201, serialized user, storing bcryped password`, () => {
+      it(`responds 200, sends JWT Token, and stores bcrypted password`, () => {
         const newUser = {
           user_id: "test_username",
           password: "11AAaa!!"
         }
+
+        const expectedToken = jwt.sign(
+          { user_id: newUser.user_id },
+          process.env.JWT_SECRET,
+          {
+            subject: newUser.user_id,
+            expiresIn: process.env.JWT_EXPIRY,
+            algorithm: "HS256",
+          }
+        )
+        
         return supertest(app)
           .post("/api/user/register")
           .send({ user: newUser })
-          .expect(201)
-          .expect(res => {
-            expect(res.body).to.have.property("user_id")
-            expect(res.body.user_id).to.eql(newUser.user_id)
-            expect(res.body).to.not.have.property("password")
-            expect(res.headers.location).to.eql(`/api/user/register/${res.body.user_id}`)
+          .expect(200, {
+            authToken: expectedToken
           })
           .expect(res =>
             db
