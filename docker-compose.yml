@@ -54,7 +54,7 @@ services:
     ulimits:
       core: 1024
     depends_on:
-      - todo-server
+      - server
     environment:
       - TZ=UTC
       - NODE_ENV=production
