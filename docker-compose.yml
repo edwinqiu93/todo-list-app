@@ -2,11 +2,12 @@ version: "2"
 
 services:
 
-  todo-nginx:
+  nginx:
+    container_name: todo-nginx
     image: nginx:latest
     depends_on:
-      - todo-server
-      - todo-app
+      - server
+      - app
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
