@@ -1,11 +1,11 @@
-const xss = require('xss')
+const xss = require("xss");
 
 const TasksService = {
     getAllTasks(knex, user_id) {
         return knex
-            .select('*')
-            .from('tasks')
-            .where('user_id', user_id)
+            .select("*")
+            .from("tasks")
+            .where("user_id", user_id)
     },
 
     serializeTask(task) {
@@ -21,17 +21,17 @@ const TasksService = {
     
     getById(knex, id) {
         return knex
-            .select('*')
-            .from('tasks')
-            .where('task_id', id)
+            .select("*")
+            .from("tasks")
+            .where("task_id", id)
             .first()
     },
 
     addTask(knex, newTask) {
         return knex
-            .from('tasks')
+            .from("tasks")
             .insert(newTask)
-            .returning('*')
+            .returning("*")
             .then(rows => {
                 return rows[0]
             })
@@ -39,21 +39,21 @@ const TasksService = {
 
     deleteTask(knex, id) {
         return knex
-            .from('tasks')
-            .where('task_id', id)
+            .from("tasks")
+            .where("task_id", id)
             .delete()
     },
 
     updateTask(knex, id, newData) {
         return knex
-            .from('tasks')
-            .where('task_id', id)
+            .from("tasks")
+            .where("task_id", id)
             .update(newData)
-            .returning('*')
+            .returning("*")
             .then(rows => {
                 return rows[0]
             })
     }
 }
 
-module.exports = TasksService
+module.exports = TasksService;

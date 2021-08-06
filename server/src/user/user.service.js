@@ -1,31 +1,29 @@
-const bcrypt = require('bcryptjs')
-const xss = require('xss')
-const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
+const bcrypt = require("bcryptjs");
+const xss = require("xss");
 const REGEX_UPPER_LOWER_NUMBER = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\S]+/;
-const jwt = require('jsonwebtoken')
-const config = require('../config')
+const jwt = require("jsonwebtoken");
+const config = require("../config");
 
 const UsersService = {
-
     getUserWithUserName(db, user_id) {
-        return db('users')
+        return db("users")
           .where({ user_id })
           .first()
     },
 
     getAllUsers (db) {
         return db
-            .select('*')
-            .from('users')
+            .select("*")
+            .from("users")
     },
 
     comparePasswords(password, hash) {
-        return bcrypt.compare(password, hash)
+        return bcrypt.compare(password, hash);
     },    
     
     checkIfUserExists(user_id, db) {
-        return db('users')
-        .where('user_id', user_id)
+        return db("users")
+        .where("user_id", user_id)
         .first()
         .then(user => !!user)
     },
@@ -34,41 +32,45 @@ const UsersService = {
         return jwt.sign(payload, config.JWT_SECRET, {
           subject: sub,
           expiresIn: config.JWT_EXPIRY,
-          algorithm: 'HS256',
+          algorithm: "HS256"
         })
     },
     
     verifyJwt(token) {
          return jwt.verify(token, config.JWT_SECRET, {
-             algorithms: ['HS256']
+             algorithms: ["HS256"]
          })
     },
 
     validatePassword (password) {
         if (password.length < 8) {
-            return 'Password must be longer than 8 characters';
-          }
-          if (password.length > 72) {
-            return 'Password must be less than 72 characters';
-          }
-          if (password.startsWith(' ') || password.endsWith(' ')) {
-            return 'Password must not start or end with empty spaces';
-          }
-          if (!REGEX_UPPER_LOWER_NUMBER.test(password)) {
-            return 'Password must contain one Upper case, Lower case, and Number';
-          }
-          return null
+            return "Password must be longer than 8 characters";
+        }
+
+        if (password.length > 72) {
+            return "Password must be less than 72 characters";
+        }
+
+        if (password.startsWith(" ") || password.endsWith(" ")) {
+            return "Password must not start or end with empty spaces";
+        }
+
+        if (!REGEX_UPPER_LOWER_NUMBER.test(password)) {
+            return "Password must contain one Upper case, Lower case, and Number";
+        }
+
+        return null;
     },
 
     hashPassword (password) {
-        return bcrypt.hash(password, 12)
+        return bcrypt.hash(password, 12);
     },
 
     insertUser (user, db) {
         return db
-            .from('users')
+            .from("users")
             .insert(user)
-            .returning('*')
+            .returning("*")
             .then(rows => {
                 return rows[0]
             })
@@ -100,10 +102,10 @@ const UsersService = {
 
     updateUser (db, user_id, info) {
         return db
-            .from('users')
-            .where('user_id', user_id)
+            .from("users")
+            .where("user_id", user_id)
             .update(info)
-            .returning('*')
+            .returning("*")
             .then(rows => {
                 return rows[0]
             })

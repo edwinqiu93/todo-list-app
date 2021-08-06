@@ -17,7 +17,6 @@ app.use(compression());
 app.use("/api", require("./index.route"));
 
 app.use((error, req, res, next) => {
-
 	if (error.isAppError)
 		error.status = error.statusCode || 400;
 

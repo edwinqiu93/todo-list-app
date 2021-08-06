@@ -19,9 +19,7 @@ describe('Protected endpoints', function() {
   })
 
   after('disconnect from db', () => db.destroy());
-
   before('cleanup', () => helpers.cleanTables(db));
-
   afterEach('cleanup', () => helpers.cleanTables(db));
 
   beforeEach('insert users', () => {
@@ -29,13 +27,12 @@ describe('Protected endpoints', function() {
         .from('users')
         .insert(testUsers)
   })
+
   beforeEach('insert tasks', () => {
     return db
         .from('tasks')
         .insert(testTasks)
   })
-  
-
 
   const protectedEndpoints = [
     {
@@ -68,8 +65,8 @@ describe('Protected endpoints', function() {
       })
 
       it(`responds 401 'Unauthorized request' when invalid JWT secret`, () => {
-        const validUser = testUsers[0]
-        const invalidSecret = 'bad-secret'
+        const validUser = testUsers[0];
+        const invalidSecret = 'bad-secret';
         return endpoint.method(endpoint.path)
           .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
           .expect(401, `"Unauthorized Request"`)

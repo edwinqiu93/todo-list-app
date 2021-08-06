@@ -13,28 +13,26 @@ describe("Task Endpoints", function() {
 
     before("make knex instance", () => {
         db = knex({
-        client: "pg",
-        connection: process.env.TEST_DB_URL,
+            client: "pg",
+            connection: process.env.TEST_DB_URL,
         })
         app.set("db", db);
     })
 
     after("disconnect from db", () => db.destroy());
-
     before("cleanup", () => helpers.cleanTables(db));
-
     afterEach("cleanup", () => helpers.cleanTables(db));
 
     describe(`POST /api/tasks`, () => {
-        beforeEach('insert users', () => {
+        beforeEach("insert users", () => {
             return db
-                .from('users')
+                .from("users")
                 .insert(testUsers)
         })
 
-        beforeEach('insert tasks', () => {
+        beforeEach("insert tasks", () => {
             return db
-                .from('tasks')
+                .from("tasks")
                 .insert(testTasks)
         })
 
@@ -66,8 +64,8 @@ describe("Task Endpoints", function() {
                 })
                 .expect(res =>
                     db
-                        .from('tasks')
-                        .select('*')
+                        .from("tasks")
+                        .select("*")
                         .where({ task_id: res.body.task_id })
                         .first()
                         .then(row => {
@@ -86,27 +84,26 @@ describe("Task Endpoints", function() {
                 const payload = {
                     task_title: "Test Title 2",
                     task_description: "Test Description 2",
-                    due_date: new Date('2021-09-20T07:00:00.00Z'),
+                    due_date: new Date("2021-09-20T07:00:00.00Z"),
                     completed: "N",
                     user_id: testUser.user_id,
                 }
 
                 it(`responds with 400 and an error message when the "${field}" is missing`, () => {
                     delete payload[field];
-
                     return supertest(app)
-                    .post("/api/tasks")
-                    .set("Authorization", helpers.makeAuthHeader(testUser))
-                    .send({ payload })
-                    .expect(400, `"Please fill in the ${field} field and resubmit"`)
+                        .post("/api/tasks")
+                        .set("Authorization", helpers.makeAuthHeader(testUser))
+                        .send({ payload })
+                        .expect(400, `"Please fill in the ${field} field and resubmit"`)
                 })
         })
     })
 
     describe(`GET /api/tasks`, () => {
-        beforeEach('insert users', () => {
+        beforeEach("insert users", () => {
             return db
-                .from('users')
+                .from("users")
                 .insert(testUsers)
         })
 
@@ -115,26 +112,26 @@ describe("Task Endpoints", function() {
         context(`No Tasks Inserted into Database`, () => {
             it(`responds with 200 and an empty list`, () => {
                 return supertest(app)
-                    .get('/api/tasks')
+                    .get("/api/tasks")
                     .set("Authorization", helpers.makeAuthHeader(testUser))
                     .expect(200, [])
             })
         })
 
-        context('When Tasks are Inserted into Database', () => {
-            beforeEach('insert tasks', () => {
+        context("When Tasks are Inserted into Database", () => {
+            beforeEach("insert tasks", () => {
                 return db
-                    .from('tasks')
+                    .from("tasks")
                     .insert(testTasks[0])
             })
 
-            it('responds with 200 and all of the tasks', async () => {
+            it("responds with 200 and all of the tasks", async () => {
                 const expectedTasks = testTasks
                     .filter(task => task.user_id == testUser.user_id)
                     .map(task => helpers.makeExpectedTask(task, [testUser]))
 
                 return supertest(app)
-                    .get('/api/tasks')
+                    .get("/api/tasks")
                     .set("Authorization", helpers.makeAuthHeader(testUser))
                     .expect(200, expectedTasks)
             })
@@ -146,13 +143,13 @@ describe("Task Endpoints", function() {
                 expectedTask
             } = helpers.makeMaliciousTask(testUser)
 
-            beforeEach('insert malicious thing', () => {
+            beforeEach("insert malicious thing", () => {
                 return db
-                    .from('tasks')
+                    .from("tasks")
                     .insert(maliciousTask)
             })  
 
-            it('removes XSS attack content', () => {
+            it("removes XSS attack content", () => {
                 return supertest(app)
                     .get(`/api/tasks`)
                     .set("Authorization", helpers.makeAuthHeader(testUser))
@@ -166,15 +163,15 @@ describe("Task Endpoints", function() {
     })
 
     describe("DELETE /api/tasks/:task_id", () => {
-        beforeEach('insert users', () => {
+        beforeEach("insert users", () => {
             return db
-                .from('users')
+                .from("users")
                 .insert(testUsers)
         })
 
-        beforeEach('insert tasks', () => {
+        beforeEach("insert tasks", () => {
             return db
-                .from('tasks')
+                .from("tasks")
                 .insert(testTasks)
         })
 
@@ -188,8 +185,8 @@ describe("Task Endpoints", function() {
                 .expect(204)
                 .expect(res => {
                     db
-                    .from('tasks')
-                    .select('*')
+                    .from("tasks")
+                    .select("*")
                     .where({ task_id: testTask.task_id })
                     .first()
                     .then(row => {
@@ -213,15 +210,15 @@ describe("Task Endpoints", function() {
     });
 
     describe("PATCH /api/tasks/:task_id", () => {
-        beforeEach('insert users', () => {
+        beforeEach("insert users", () => {
             return db
-                .from('users')
+                .from("users")
                 .insert(testUsers)
         })
 
-        beforeEach('insert tasks', () => {
+        beforeEach("insert tasks", () => {
             return db
-                .from('tasks')
+                .from("tasks")
                 .insert(testTasks)
         })
 
@@ -235,8 +232,8 @@ describe("Task Endpoints", function() {
                 .expect(200)
                 .expect(res => {
                     db
-                    .from('tasks')
-                    .select('*')
+                    .from("tasks")
+                    .select("*")
                     .where({ task_id: testTask.task_id })
                     .first()
                     .then(row => {

@@ -1,5 +1,4 @@
 "use strict";
-const validate = require("express-joi-verifier");
 const PromiseRouter = require("express-promise-router");
 const requireAuth = require("../utils/auth");
 const controller = require("./user.controller.js");

@@ -1,8 +1,8 @@
-const knex = require("knex")
-const bcrypt = require("bcryptjs")
-const app = require("../src/app")
-const helpers = require("./test-helpers")
-const jwt = require("jsonwebtoken")
+const knex = require("knex");
+const bcrypt = require("bcryptjs");
+const app = require("../src/app");
+const helpers = require("./test-helpers");
+const jwt = require("jsonwebtoken");
 
 describe("Users Endpoints", function() {
   let db;
@@ -19,9 +19,7 @@ describe("Users Endpoints", function() {
   })
 
   after("disconnect from db", () => db.destroy());
-
   before("cleanup", () => helpers.cleanTables(db));
-
   afterEach("cleanup", () => helpers.cleanTables(db));
 
   describe(`POST /api/user/register`, () => {
@@ -56,6 +54,7 @@ describe("Users Endpoints", function() {
           user_id: "test username",
           password: "1234567",  
         }
+        
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userShortPassword })
@@ -67,6 +66,7 @@ describe("Users Endpoints", function() {
           user_id: "test username",
           password: "*".repeat(73), 
         }
+
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userLongPassword })
@@ -78,6 +78,7 @@ describe("Users Endpoints", function() {
           user_id: "test username",
           password: " 1Aa!2Bb@",  
         }
+
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordStartsSpaces })
@@ -89,6 +90,7 @@ describe("Users Endpoints", function() {
           user_id: "test username",
           password: "1Aa!2Bb@ "
         }
+
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordEndsSpaces })
@@ -100,6 +102,7 @@ describe("Users Endpoints", function() {
           user_id: "test username",
           password: "AAaabbccc"
         }
+        
         return supertest(app)
           .post("/api/user/register")
           .send({ user: userPasswordNotComplex })
@@ -111,6 +114,7 @@ describe("Users Endpoints", function() {
           user_id: testUser.user_id,
           password: "11AAaa!!"
         }
+
         return supertest(app)
           .post("/api/user/register")
           .send({ user: duplicateUser })
@@ -124,23 +128,11 @@ describe("Users Endpoints", function() {
           user_id: "test_username",
           password: "11AAaa!!"
         }
-
-        const expectedToken = jwt.sign(
-          { user_id: newUser.user_id },
-          process.env.JWT_SECRET,
-          {
-            subject: newUser.user_id,
-            expiresIn: process.env.JWT_EXPIRY,
-            algorithm: "HS256",
-          }
-        )
         
         return supertest(app)
           .post("/api/user/register")
           .send({ user: newUser })
-          .expect(200, {
-            authToken: expectedToken
-          })
+          .expect(200)
           .expect(res =>
             db
               .from("users")
@@ -158,6 +150,7 @@ describe("Users Endpoints", function() {
           )
       })
     })
+
   })
 
   describe(`POST /api/user/login`, () => {
@@ -177,7 +170,7 @@ describe("Users Endpoints", function() {
       }
 
       it(`responds with 400 required error when "${field}" is missing`, () => {
-        delete loginAttemptBody[field]
+        delete loginAttemptBody[field];
 
         return supertest(app)
           .post("/api/user/login")
@@ -207,6 +200,7 @@ describe("Users Endpoints", function() {
         user_id: testUser.user_id,
         password: testUser.password,
       }
+
       const expectedToken = jwt.sign(
         { user_id: testUser.user_id },
         process.env.JWT_SECRET,
@@ -216,6 +210,7 @@ describe("Users Endpoints", function() {
           algorithm: "HS256",
         }
       )
+
       return supertest(app)
         .post("/api/user/login")
         .send({ user: userValidCreds })
@@ -224,4 +219,5 @@ describe("Users Endpoints", function() {
         })
     })
   })
+  
 })
