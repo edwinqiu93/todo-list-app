@@ -5,18 +5,27 @@ const moment = require("moment");
 const logger = require("../../logger");
 
 async function createTask(req, res, next) {
+    let { payload } = req.body;
     let { payload : { task_title, task_description, due_date, completed } } = req.body;
     let db = req.app.get("db");
 
-    if (!task_title) {
-        return res.stautus(400).json("Please fill in a Task Title before submitting");
-    }
-
     console.log("payload", req.body.payload);
 
-    let newTask = { task_title, task_description, completed, user_id: req.user.user_id };
+    let newTask = { 
+        task_title, 
+        task_description, 
+        completed, 
+        user_id: payload.hasOwnProperty("test") ? payload.user_id : req.user.user_id 
+    };
 
     due_date ? newTask.due_date = due_date : null;
+
+    console.log("new Task", newTask);
+
+    if (!newTask["task_title"]) {
+        // console.log("hello");
+        return res.status(400).json(`Please fill in the task_title field and resubmit`);
+    }
 
     return TasksService.addTask(db, newTask)
             .then(task => {

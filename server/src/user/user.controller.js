@@ -9,7 +9,7 @@ async function registerAccount(req, res, next) {
     console.log("user", user);
 
     for (const field of ["user_id", "password"]) {
-        if (!user.hasOwnProperty(field)) {
+        if (!user[field]) {
             return res.status(400).json(`Please fill in the ${field} field and resubmit.`)
         }
     }

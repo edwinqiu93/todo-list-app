@@ -10,7 +10,6 @@ function makeArticlesFixtures() {
     }
 }
 
-
 function makeUsersArray() {
   return [
     {
@@ -123,23 +122,6 @@ function seedMaliciousTask(db, user, task) {
         .insert([task])
     )
 }
-
-// function cleanTables(db) {
-//   return db.transaction(trx =>
-//     trx.raw(
-//       `TRUNCATE
-//         tasks,
-//         users
-//       `
-//     )
-//     .then(() =>
-//       Promise.all([
-//         trx.raw(`ALTER SEQUENCE tasks_task_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`SELECT setval('tasks_task_id_seq', 0)`)
-//       ])
-//     )
-//   )
-// }
 function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(

@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken")
 describe("Users Endpoints", function() {
   let db;
 
-  const { testUsers, testTasks } = helpers.makeArticlesFixtures();
+  const { testUsers } = helpers.makeArticlesFixtures();
   const testUser = testUsers[0];
 
   before("make knex instance", () => {
@@ -54,8 +54,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 "Password must be longer than 8 characters" when empty password`, () => {
         const userShortPassword = {
           user_id: "test username",
-          password: "1234567",
-          
+          password: "1234567",  
         }
         return supertest(app)
           .post("/api/user/register")
@@ -66,8 +65,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 "Password must be less than 72 characters" when long password`, () => {
         const userLongPassword = {
           user_id: "test username",
-          password: "*".repeat(73),
-        
+          password: "*".repeat(73), 
         }
         return supertest(app)
           .post("/api/user/register")
@@ -78,8 +76,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 error when password starts with spaces`, () => {
         const userPasswordStartsSpaces = {
           user_id: "test username",
-          password: " 1Aa!2Bb@",
-         
+          password: " 1Aa!2Bb@",  
         }
         return supertest(app)
           .post("/api/user/register")
@@ -90,8 +87,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 error when password ends with spaces`, () => {
         const userPasswordEndsSpaces = {
           user_id: "test username",
-          password: "1Aa!2Bb@ ",
-         
+          password: "1Aa!2Bb@ "
         }
         return supertest(app)
           .post("/api/user/register")
@@ -102,8 +98,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 error when password isn"t complex enough`, () => {
         const userPasswordNotComplex = {
           user_id: "test username",
-          password: "AAaabbccc",
-         
+          password: "AAaabbccc"
         }
         return supertest(app)
           .post("/api/user/register")
@@ -114,8 +109,7 @@ describe("Users Endpoints", function() {
       it(`responds 400 "User name already taken" when username isn"t unique`, () => {
         const duplicateUser = {
           user_id: testUser.user_id,
-          password: "11AAaa!!",
-         
+          password: "11AAaa!!"
         }
         return supertest(app)
           .post("/api/user/register")
@@ -128,8 +122,7 @@ describe("Users Endpoints", function() {
       it(`responds 201, serialized user, storing bcryped password`, () => {
         const newUser = {
           user_id: "test_username",
-          password: "11AAaa!!",
-         
+          password: "11AAaa!!"
         }
         return supertest(app)
           .post("/api/user/register")
@@ -168,7 +161,7 @@ describe("Users Endpoints", function() {
       )
     )
 
-    const requiredFields = ["user_id", "password"]
+    const requiredFields = ["user_id", "password"];
 
     requiredFields.forEach(field => {
       const loginAttemptBody = {
@@ -187,7 +180,7 @@ describe("Users Endpoints", function() {
     })
 
     it(`responds 400 "invalid username or password" when bad username`, () => {
-      const userInvalidUser = { user_id: "user-not", password: "existy" }
+      const userInvalidUser = { user_id: "user-not", password: "existy" };
       return supertest(app)
         .post("/api/user/login")
         .send({ user: userInvalidUser })
@@ -195,7 +188,7 @@ describe("Users Endpoints", function() {
     })
 
     it(`responds 400 "invalid username or password" when bad password`, () => {
-      const userInvalidPass = { user_id: testUser.user_id, password: "incorrect" }
+      const userInvalidPass = { user_id: testUser.user_id, password: "incorrect" };
       return supertest(app)
         .post("/api/user/login")
         .send({ user: userInvalidPass })
@@ -224,5 +217,4 @@ describe("Users Endpoints", function() {
         })
     })
   })
-
 })
