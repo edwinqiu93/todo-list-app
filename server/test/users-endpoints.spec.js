@@ -31,7 +31,7 @@ describe("Users Endpoints", function() {
         )
       )
 
-      const requiredFields = ["user_id", "password"]
+      const requiredFields = ["user_id", "password"];
 
       requiredFields.forEach(field => {
         const registerAttemptBody = {
@@ -141,8 +141,7 @@ describe("Users Endpoints", function() {
               .first()
               .then(row => {
                 expect(row.user_id).to.eql(newUser.user_id)
-
-                return bcrypt.compare(newUser.password, row.password)
+                return bcrypt.compare(newUser.password, row.password);
               })
               .then(compareMatch => {
                 expect(compareMatch).to.be.true
