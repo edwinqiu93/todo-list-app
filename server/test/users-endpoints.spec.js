@@ -128,25 +128,27 @@ describe("Users Endpoints", function() {
           user_id: "test_username",
           password: "11AAaa!!"
         }
-        
+
+        const userValidCreds = {
+          user_id: newUser.user_id
+        }
+  
         return supertest(app)
           .post("/api/user/register")
           .send({ user: newUser })
           .expect(200)
-          .expect(res =>
-            db
-              .from("users")
-              .select("*")
-              .where({ user_id: res.body.user_id })
-              .first()
-              .then(row => {
-                expect(row.user_id).to.eql(newUser.user_id)
-                return bcrypt.compare(newUser.password, row.password);
-              })
-              .then(compareMatch => {
-                expect(compareMatch).to.be.true
-              })
-          )
+          .then(res => {
+            const expectedToken = jwt.sign(
+              { user_id: newUser.user_id },
+              process.env.JWT_SECRET,
+              {
+                subject: newUser.user_id,
+                expiresIn: process.env.JWT_EXPIRY,
+                algorithm: "HS256",
+              }
+            )
+            expect(res.body.authToken).to.eql(expectedToken)
+          })
       })
     })
 
