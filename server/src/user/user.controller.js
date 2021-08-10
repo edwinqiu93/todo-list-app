@@ -53,7 +53,6 @@ async function registerAccount(req, res, next) {
 
 async function login(req, res, next) {
     const { user } = req.body;
-    console.log("USER", user);
     const { user: { user_id, password }} = req.body;
     const db = req.app.get('db');
 
